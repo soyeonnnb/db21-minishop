@@ -52,6 +52,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     gender = models.CharField(
         max_length=6, choices=GENDER_CHOICES, default=GENDER_MALE
     )  # 성별 애트리뷰트
+    birth = models.DateField(blank=True)
     mobile = models.IntegerField(blank=True, null=True)  # 핸드폰번호 애트리뷰트
     is_staff = models.BooleanField(default=False)  # 스태프권한 애트리뷰트
     is_active = models.BooleanField(default=False)
