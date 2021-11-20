@@ -24,14 +24,7 @@ class ProductAdmin(admin.ModelAdmin):  # Admin 페이지에 상품 추가
     fieldsets = (  # 상품 애트리뷰트들 분류
         (
             "Basic Info",
-            {
-                "fields": (
-                    "name",
-                    "description",
-                    "price",
-                    "categories",
-                )
-            },
+            {"fields": ("name", "description", "price", "categories", "photo")},
         ),
         (
             "Inventory",
@@ -40,12 +33,13 @@ class ProductAdmin(admin.ModelAdmin):  # Admin 페이지에 상품 추가
             },
         ),
     )
-    ordering = ("name", "price", "inventory")  # 이름, 가격, 재고 수로 순서
+    ordering = ("name", "price", "inventory", "created_at")  # 이름, 가격, 재고 수로 순서
     list_display = (  # 메인 화면에 보이는 애트리뷰트
         "name",
         "price",
         "inventory",
         "discountinue",
+        "created_at",
     )
     list_filter = (  # 해당 애트리뷰트들로 filtering 가능
         "categories",
