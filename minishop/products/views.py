@@ -14,8 +14,8 @@ class HomeView(ListView):
     context_object_name = "products"
 
 
-class ProductDetail(DetailView):
+class ProductDetailView(DetailView):
 
-    """ProductDetail Definition"""
+    """Product Detail View Definition"""
 
     model = models.Product

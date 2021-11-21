@@ -3,4 +3,6 @@ from . import views
 
 app_name = "products"
 
-urlpatterns = [path("<int:pk>/", views.ProductDetail.as_view(), name="detail")]
+urlpatterns = [
+    path("<int:pk>/", views.ProductDetailView.as_view(), name="detail"),
+]
