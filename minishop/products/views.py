@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 from . import models
 
 # Create your views here.
@@ -12,3 +12,10 @@ class HomeView(ListView):
     paginate_orphans = 4
     ordering = "created_at"
     context_object_name = "products"
+
+
+class ProductDetail(DetailView):
+
+    """ProductDetail Definition"""
+
+    model = models.Product

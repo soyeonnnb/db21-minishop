@@ -2,6 +2,8 @@
 {% block content %}
 <h1>product_list</h1>
 {% for product in products %}
-{{product.name}}
+<a href="{% url 'products:detail' pk=product.pk %}">
+    {{product.name}}
+</a>
 {% endfor %}
 {% endblock %}
