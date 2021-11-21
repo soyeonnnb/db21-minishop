@@ -36,6 +36,7 @@ def create_order(request, pk):
             product = product_models.Product.objects.get(pk=pk)
         return render(request, "orders/order_create.html", {"form": form, "pk": pk})
     except InventoryException:
+        messages.error(request, "재고부족")
         return render(request, "orders/order_create.html", {"form": form, "pk": pk})
 
 

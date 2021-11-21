@@ -2,5 +2,9 @@
 {% block content %}
 <h1>product_Detail</h1>
 {{product}}
+{% if product.inventory == 0 %}
+재고 부족
+{% else %}
 <a href="{% url 'orders:create' product.pk %}">주문하기</a>
+{% endif %}
 {% endblock %}
