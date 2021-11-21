@@ -18,8 +18,8 @@ class Order(models.Model):
         "users.User", on_delete=models.CASCADE
     )  # 주문자 애트리뷰트 foreign key 가 사라지면 해당 객체도 삭제
     product = models.ForeignKey(
-        "products.Product", on_delete=models.DO_NOTHING
-    )  # 상품 애트리뷰트 foreign key가 삭제되도 변동 없음.
+        "products.Product", on_delete=models.CASCADE
+    )  # 상품 애트리뷰트 foreign key 가 사라지면 해당 객체도 삭제
     number = models.IntegerField(default=1)  # 주문 수량 애트리뷰트
     date_ordered = models.DateTimeField(auto_now_add=True)  # 주문 날짜 애트리뷰트
     method = models.CharField(

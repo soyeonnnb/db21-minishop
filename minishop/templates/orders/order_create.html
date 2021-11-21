@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+{% block content %}
+<form action="." method="post">
+    {% csrf_token %}
+    {{form}}
+    <button>주문하기</button>
+</form>
+{% endblock %}

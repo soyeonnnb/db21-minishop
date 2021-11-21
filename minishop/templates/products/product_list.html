@@ -2,7 +2,7 @@
 {% block content %}
 <h1>product_list</h1>
 {% for product in products %}
-<a href="{% url 'products:detail' pk=product.pk %}">
+<a href="{% url 'products:detail' product=product %}">
     {{product.name}}
 </a>
 {% endfor %}
