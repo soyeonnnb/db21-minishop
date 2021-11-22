@@ -5,7 +5,7 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path("", include("core.urls", namespace="core")),
-    path("wishlists/", include("wishlists.urls", namespace="wishlists")),
+    path("wishs/", include("wishs.urls", namespace="wishs")),
     path("products/", include("products.urls", namespace="products")),
     path("users/", include("users.urls", namespace="users")),
     path("orders/", include("orders.urls", namespace="orders")),

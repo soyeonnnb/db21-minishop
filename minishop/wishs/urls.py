@@ -1,5 +1,5 @@
 from django.urls import path
 
-app_name = "wishlists"
+app_name = "wishs"
 
 urlpatterns = []

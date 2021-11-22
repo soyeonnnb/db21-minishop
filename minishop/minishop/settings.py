@@ -41,7 +41,7 @@ DJANGO_APPS = [
 PROJECT_APPS = [
     "users.apps.UsersConfig",
     "products.apps.ProductsConfig",
-    "wishlists.apps.WishlistsConfig",
+    "wishs.apps.WishsConfig",
     "orders.apps.OrdersConfig",
     "board.apps.BoardConfig",
 ]

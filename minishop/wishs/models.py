@@ -1,9 +1,9 @@
 from django.db import models
 
 # Create your models here.
-class WishList(models.Model):
+class Wish(models.Model):
 
-    """WishList Model Definition"""
+    """Wish Model Definition"""
 
     user = models.ForeignKey("users.User", on_delete=models.CASCADE)
     product = models.ForeignKey("products.Product", on_delete=models.CASCADE)
