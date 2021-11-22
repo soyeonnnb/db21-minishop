@@ -11,7 +11,7 @@ from . import models
 from . import forms
 from products import models as product_models
 
-
+# 주문하기 함수
 @login_required
 def create_order(request, pk):
     try:
@@ -44,10 +44,12 @@ def create_order(request, pk):
         return render(request, "orders/order_create.html", {"form": form, "pk": pk})
 
 
+# 재고부족 에러
 class InventoryException(Exception):
     pass
 
 
+# 내 주문 리스트 조회 리스트
 @login_required
 def my_order_view(request):
     user = request.user
@@ -55,12 +57,14 @@ def my_order_view(request):
     return render(request, "orders/order_list.html", {"order_list": order_list})
 
 
+# 주문 디테일 조회 클래스
 @method_decorator(login_required, name="dispatch")
 class OrderDetailView(DetailView):
 
     model = models.Order
 
 
+# 주문 수정 함수
 def order_update(request, pk):
     try:
         if request.method == "POST":
@@ -94,3 +98,21 @@ def order_update(request, pk):
     except InventoryException:
         messages.error(request, "재고부족")
         return render(request, "orders/order_update.html", {"form": form, "pk": pk})
+
+
+# 주문 취소 함수
+def order_delete(request, pk):
+    order = models.Order.objects.get(pk=pk)
+    if order is None:
+        messages.success(request, "주문이 존재하지 않습니다.")
+    product = product_models.Product.objects.get(pk=order.product.pk)
+    if product is None:
+        order.delete()
+        return redirect(reverse_lazy("orders:my_order"))
+    with transaction.atomic():  # 모든 처리 과정 후, 재고 저장 및 주문 저장은 하나의 트랜잭션에서 관리
+        # order = form.save(commit=False)
+        product.inventory += order.number
+        product.save()
+        order.delete()
+        messages.success(request, "주문이 삭제되었습니다.")
+    return redirect(reverse_lazy("orders:my_order"))

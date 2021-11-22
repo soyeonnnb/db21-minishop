@@ -4,8 +4,9 @@
 <h1>Order_Detail</h1>
 {{order}}
 {% if order.delivery %}
-<h5>배송되어 주문이 수정 불가합니다.</h5>
+<h5>배송되어 주문이 수정 및 취소 불가합니다.</h5>
 {% else %}
 <a href="{% url 'orders:update' pk=order.pk %}">주문 수정하기</a>
+<a href="{% url 'orders:delete' pk=order.pk %}">주문 취소하기</a>
 {% endif %}
 {% endblock %}
