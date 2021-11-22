@@ -1,4 +1,5 @@
 from django.shortcuts import get_object_or_404, render, redirect
+from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy, reverse
@@ -73,3 +74,8 @@ class UserUpdateView(UpdateView, LoggedInOnlyView):
 
     def get_object(self, queryset=None):
         return self.request.user
+
+
+@staff_member_required
+def staff_view(request):
+    return render(request, "users/staff.html")
