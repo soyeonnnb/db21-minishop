@@ -55,7 +55,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     birth = models.DateField(blank=True)  # 생일 애트리뷰트
     mobile = models.IntegerField(blank=True, null=True)  # 핸드폰번호 애트리뷰트
     is_staff = models.BooleanField(default=False)  # 스태프권한 애트리뷰트
-    is_active = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
     date_joined = models.DateTimeField(blank=True, auto_now_add=True)  # 가입날짜 애트리뷰트
     last_login = models.DateTimeField(auto_now=True)  # 최근 로그인날짜/시간 애트리뷰트
     objects = UserManager()  # User table을 위해 필요한 코드

@@ -1,13 +1,19 @@
 from django.shortcuts import get_object_or_404, render, redirect
+from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.views import LoginView
 from django.urls import reverse_lazy, reverse
+from django.views import View
 from django.views.generic import FormView, UpdateView
 
 from . import forms
 from . import models
+from . import mixins
 from .mixins import LoggedInOnlyView
+
+from products import models as product_models
 
 
 # 로그아웃 method
@@ -17,19 +23,23 @@ def logout_view(request):
 
 
 # 로그인 method
-class LoginView(FormView):
+class UserLoginView(View):
+    def get(self, request):
+        form = forms.LoginForm()
+        return render(request, "users/login.html", {"form": form})
 
-    template_name = "users/login.html"
-    success_url = reverse_lazy("core:home")
-    form_class = forms.LoginForm
-
-    def form_valid(self, form):
-        email = form.cleaned_data.get("email")
-        password = form.cleaned_data.get("password")
-        user = authenticate(self.request, email=email, password=password)
-        if user is not None:
-            login(self.request, user)
-        return super().form_valid(form)
+    def post(self, request):
+        form = forms.LoginForm(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data.get("email")
+            password = form.cleaned_data.get("password")
+            user = authenticate(request, email=email, password=password)
+            print(email, password)
+            print(user)
+            if user is not None:
+                login(request, user)
+                return redirect(reverse("core:home"))
+        return render(request, "users/login.html", {"form": form})
 
 
 @login_required
@@ -78,4 +88,5 @@ class UserUpdateView(UpdateView, LoggedInOnlyView):
 
 @staff_member_required
 def staff_view(request):
-    return render(request, "users/staff.html")
+    product_list = product_models.Product.objects.all()
+    return render(request, "users/staff.html", {"product_list": product_list})

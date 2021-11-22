@@ -1,12 +1,14 @@
 from django import forms
+from django.contrib.auth.forms import (
+    UserChangeForm,
+    AuthenticationForm,
+)
 from . import models
 
 
 class LoginForm(forms.Form):
-    email = forms.EmailField(widget=forms.EmailInput(attrs={"placeholder": "이메일"}))
-    password = forms.CharField(
-        widget=forms.PasswordInput(attrs={"placeholder": "비밀번호"})
-    )
+    email = forms.EmailField()
+    password = forms.CharField(widget=forms.PasswordInput)
 
     def clean(self):
         email = self.cleaned_data.get("email")
@@ -16,9 +18,9 @@ class LoginForm(forms.Form):
             if user.check_password(password):
                 return self.cleaned_data
             else:
-                self.add_error("password", forms.ValidationError("Password is Wrong"))
+                self.add_error("password", forms.ValidationError("비밀번호가 틀립니다."))
         except models.User.DoesNotExist:
-            self.add_error("email", forms.ValidationError("User Does Not Exist."))
+            self.add_error("email", forms.ValidationError("이메일이 존재하지 않습니다."))
 
 
 # 날짜 뷰 형식 바꿔주는 클래스
