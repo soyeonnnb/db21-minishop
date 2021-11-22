@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>User Update</h1>
+<form action="." method="post">
+    {% csrf_token %}
+    <p>nickname {{form.nickname}}</p>
+    <p>gender {{form.gender}}</p>
+    <p>birth {{form.birth}}</p>
+    <p>mobile {{form.mobile}}</p>
+    <button>수정하기</button>
+</form>
+{% endblock %}

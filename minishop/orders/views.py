@@ -4,11 +4,14 @@ from django.views.generic import FormView
 from django.shortcuts import redirect
 from django.urls import reverse_lazy, reverse
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+
 from . import models
 from products import models as product_models
 from . import forms
 
 
+@login_required
 def create_order(request, pk):
     try:
         if request.method == "POST":

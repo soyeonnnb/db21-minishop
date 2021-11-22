@@ -4,10 +4,11 @@
     </div>
     <div>
         {% if user.is_authenticated %}
-        <a href="{% url 'users:my_page' %}">My Page</a>
+        <a href="{% url 'users:my_page'%}">My Page</a>
         <a href="{% url 'users:logout' %}">Log Out</a>
         {% else %}
         <a href="{% url 'users:login' %}">Login</a>
+        <a href="{% url 'users:sign_up' %}">회원가입</a>
         {% endif %}
     </div>
 </div>

@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>User info</h1>
+<p>email {{user_info.email}}</p>
+<p>nickname {{user_info.nickname}}</p>
+<p>gender {{user_info.gender}}</p>
+<p>birth {{user_info.birth}}</p>
+<p>mobile {{user_info.mobile}}</p>
+<a href="{% url 'users:update' %}">수정하기</a>
+{% endblock %}
