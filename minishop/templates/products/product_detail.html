@@ -1,7 +1,10 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block content %}
 <h1>product_Detail</h1>
 {{product}}
+<img src="{{ product.photo.url }}" />
+{{product.photo.file}}
 {% if product.inventory == 0 %}
 재고 부족
 {% else %}

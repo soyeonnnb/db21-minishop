@@ -7,7 +7,7 @@
 </div>
 {% endfor %}
 {% endif %}
-<form action="." method="post">
+<form action="." method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{form}}
     <button>문의하기</button>

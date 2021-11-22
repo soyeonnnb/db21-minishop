@@ -9,6 +9,7 @@ from django.views.generic import (
 from django.contrib.admin.views.decorators import staff_member_required
 from django.utils.decorators import method_decorator
 from django.urls import reverse_lazy, reverse
+from django.shortcuts import redirect
 
 
 from . import models
@@ -28,13 +29,7 @@ class HomeView(ListView):
     context_object_name = "products"
 
 
-class ProductDetailView(DetailView):
-
-    """Product Detail View Definition"""
-
-    model = models.Product
-
-
+# 상품 상세페이지
 def product_detail_view(request, pk):
     user = request.user
     product = models.Product.objects.get(pk=pk)
