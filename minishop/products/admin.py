@@ -12,8 +12,6 @@ class ProductCategoryAdmin(admin.ModelAdmin):  # Admin 페이지에 상품 카�
     def used_by(self, obj):
         return obj.products.count()
 
-    pass
-
 
 # Register your models here.
 @admin.register(models.Product)
