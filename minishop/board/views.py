@@ -60,3 +60,9 @@ def faq_post_create(request):
         form = forms.CreateFAQPostForm()
 
     return render(request, "board/faqpost_create.html", {"form": form})
+
+
+def my_faqpost_view(request):
+    user = request.user
+    post_list = models.FAQPost.objects.filter(user=user)
+    return render(request, "board/my_faqpost.html", {"post_list": post_list})

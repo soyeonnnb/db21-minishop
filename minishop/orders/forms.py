@@ -11,5 +11,12 @@ class CreateOrderForm(forms.ModelForm):
             "address",
         ]
 
-    def __init__(self, *args, **kwargs):
-        super(CreateOrderForm, self).__init__(*args, **kwargs)
+
+class UpdateOrderForm(forms.ModelForm):
+    class Meta:
+        model = models.Order
+        fields = [
+            "number",
+            "method",
+            "address",
+        ]

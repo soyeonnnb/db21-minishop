@@ -1,14 +1,15 @@
 from django.shortcuts import render
 from django.db import transaction
-from django.views.generic import FormView
+from django.views.generic import DetailView
 from django.shortcuts import redirect
 from django.urls import reverse_lazy, reverse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 
 from . import models
-from products import models as product_models
 from . import forms
+from products import models as product_models
 
 
 @login_required
@@ -20,15 +21,15 @@ def create_order(request, pk):
             if not product:
                 return redirect(reverse("core:home"))
             if form.is_valid():
-                order = form.save(commit=False)
-                order.product = product
-                order.user = request.user
-                order.delivery = False
-                number = form.cleaned_data["number"]
-                product.inventory -= number
-                if product.inventory < 0:
-                    raise InventoryException()
                 with transaction.atomic():  # 모든 처리 과정 후, 재고 저장 및 주문 저장은 하나의 트랜잭션에서 관리
+                    order = form.save(commit=False)
+                    order.product = product
+                    order.user = request.user
+                    order.delivery = False
+                    number = form.cleaned_data["number"]
+                    product.inventory -= number
+                    if product.inventory < 0:
+                        raise InventoryException()
                     product.save()
                     order.save()
                 messages.success(request, "product ordered")
@@ -45,3 +46,51 @@ def create_order(request, pk):
 
 class InventoryException(Exception):
     pass
+
+
+@login_required
+def my_order_view(request):
+    user = request.user
+    order_list = models.Order.objects.filter(user=user)
+    return render(request, "orders/order_list.html", {"order_list": order_list})
+
+
+@method_decorator(login_required, name="dispatch")
+class OrderDetailView(DetailView):
+
+    model = models.Order
+
+
+def order_update(request, pk):
+    try:
+        if request.method == "POST":
+            order = models.Order.objects.get(pk=pk)
+            form = forms.UpdateOrderForm(request.POST)
+            product = product_models.Product.objects.get(pk=order.product.pk)
+            if not product:
+                return redirect(reverse("core:home"))
+            if form.is_valid():
+                with transaction.atomic():  # 모든 처리 과정 후, 재고 저장 및 주문 저장은 하나의 트랜잭션에서 관리
+                    # order = form.save(commit=False)
+                    number = form.cleaned_data["number"]
+                    method = form.cleaned_data["method"]
+                    address = form.cleaned_data["address"]
+                    product.inventory += order.number
+                    product.inventory -= number
+                    if product.inventory < 0:
+                        raise InventoryException()
+                    order.method = method
+                    order.address = address
+                    order.number = number
+                    product.save()
+                    order.save()
+                messages.success(request, "주문이 수정되었습니다.")
+                return redirect(reverse_lazy("orders:detail", kwargs={"pk": pk}))
+
+        else:
+            order = models.Order.objects.get(pk=pk)
+            form = forms.UpdateOrderForm(instance=order)
+        return render(request, "orders/order_update.html", {"form": form, "pk": pk})
+    except InventoryException:
+        messages.error(request, "재고부족")
+        return render(request, "orders/order_update.html", {"form": form, "pk": pk})

@@ -27,3 +27,6 @@ class Order(models.Model):
     )  # 결제방법 애트리뷰트
     address = models.TextField(null=False)  # 주소 애트리뷰트
     delivery = models.BooleanField(default=False)  # 배송 여부 애트리뷰트
+
+    def __str__(self):
+        return f"{self.user} - {self.product}"

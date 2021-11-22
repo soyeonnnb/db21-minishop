@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block content %}
+{% include 'users/partials/navbar.html' %}
+<h1>order list</h1>
+
+{% for order in order_list %}
+<p>
+    <a href="{% url 'orders:detail' pk=order.pk %}">
+        {{order}}
+    </a>
+</p>
+{% endfor %}
+{% endblock %}
