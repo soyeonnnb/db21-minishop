@@ -5,5 +5,6 @@ app_name = "board"
 
 urlpatterns = [
     path("", views.FAQListView.as_view(), name="list"),
-    path("detail/<int:pk>/", views.faq_detail, name="detail"),
+    path("create/", views.faq_post_create, name="create"),
+    path("detail/<int:pk>/", views.faq_post_detail, name="detail"),
 ]

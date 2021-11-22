@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
 <h1>faq list</h1>
+<a href="{% url 'board:create' %}">문의하기</a>
 {% for post in posts %}
 <a href="{% url 'board:detail' pk=post.pk %}">
     {{post.title}}

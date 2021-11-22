@@ -42,7 +42,7 @@ class SignUpView(FormView):
 
     template_name = "users/signup.html"
     form_class = forms.SignUpForm
-    success_url = reverse_lazy("core:home")
+    success_url = reverse_lazy("users:login")
 
     # form 이 vaild해야 저장
     def form_valid(self, form):
