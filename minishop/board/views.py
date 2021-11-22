@@ -15,9 +15,9 @@ class FAQListView(ListView):
     context_object_name = "posts"
 
 
-class FAQPostDetailView(DetailView):
-
-    """FAQPost Detail View Definition"""
-
-    model = models.FAQPost
-    context_object_name = "post"
+def faq_detail(request, pk):
+    post = models.FAQPost.objects.get(pk=pk)
+    comments = models.FAQComment.objects.filter(post=post)
+    return render(
+        request, "board/faqpost_detail.html", {"post": post, "comments": comments}
+    )

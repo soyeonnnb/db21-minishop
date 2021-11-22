@@ -2,4 +2,8 @@
 {% block content %}
 <h1>faq post_Detail</h1>
 {{post}}
+리뷰
+{% for comment in comments %}
+{{comment.comment}}
+{% endfor %}
 {% endblock %}
