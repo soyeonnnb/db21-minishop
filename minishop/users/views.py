@@ -43,10 +43,10 @@ class UserLoginView(View):
 
 
 @login_required
-def my_page(request):
+def my_info(request):
     user = request.user
     user_info = get_object_or_404(models.User, pk=user.pk)
-    return render(request, "users/my_page.html", {"user_info": user_info})
+    return render(request, "users/my_info.html", {"user_info": user_info})
 
 
 class SignUpView(FormView):

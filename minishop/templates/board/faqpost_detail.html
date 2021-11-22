@@ -2,8 +2,17 @@
 {% block content %}
 <h1>faq post_Detail</h1>
 {{post}}
-리뷰
-{% for comment in comments %}
-{{comment.comment}}
-{% endfor %}
+<div>
+    답변:
+    {% for comment in comments %}
+    {{comment.comment}}
+    {% endfor %}
+    {% if user.is_active and user.is_staff %}
+    <form action="{% url 'board:comment_create' pk=post.pk %}" method="POST">
+        {% csrf_token %}
+        {{comment_form}}
+        <button>답변달기</button>
+    </form>
+    {% endif %}
+</div>
 {% endblock %}

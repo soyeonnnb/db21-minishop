@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
-<h1>product_list</h1>
+<h1>Home</h1>
 {% for product in products %}
 <a href="{% url 'products:detail' pk=product.pk %}">
     {{product.name}}
