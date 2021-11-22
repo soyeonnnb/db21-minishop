@@ -7,4 +7,9 @@
 {% else %}
 <a href="{% url 'orders:create' product.pk %}">주문하기</a>
 {% endif %}
+{% if is_wish %}
+<a href="{% url 'wishs:delete' pk=product.pk %}">찜취소</a>
+{% else %}
+<a href="{% url 'wishs:add' pk=product.pk %}">찜하기</a>
+{% endif %}
 {% endblock %}

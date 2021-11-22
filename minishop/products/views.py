@@ -14,6 +14,7 @@ from django.urls import reverse_lazy, reverse
 from . import models
 from . import forms
 from users import mixins as users_mixins
+from wishs import models as wishs_models
 
 # Create your views here.
 class HomeView(ListView):
@@ -32,6 +33,21 @@ class ProductDetailView(DetailView):
     """Product Detail View Definition"""
 
     model = models.Product
+
+
+def product_detail_view(request, pk):
+    user = request.user
+    product = models.Product.objects.get(pk=pk)
+    try:
+        wishs_models.Wish.objects.get(user=user, product=product)
+        is_wish = True
+    except wishs_models.Wish.DoesNotExist:
+        is_wish = False
+    return render(
+        request,
+        "products/product_detail.html",
+        {"product": product, "is_wish": is_wish},
+    )
 
 
 @method_decorator(staff_member_required, name="dispatch")

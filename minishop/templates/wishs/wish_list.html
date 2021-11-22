@@ -3,10 +3,10 @@
 {% include 'users/partials/navbar.html' %}
 <h1>wishlist</h1>
 
-{% for order in order_list %}
+{% for wish in wish_list %}
 <p>
-    <a href="{% url 'orders:detail' pk=order.pk %}">
-        {{order}}
+    <a href="{% url 'products:detail' pk=wish.product.pk %}">
+        {{wish}}
     </a>
 </p>
 {% endfor %}
