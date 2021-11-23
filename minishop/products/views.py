@@ -6,6 +6,7 @@ from django.views.generic import (
     UpdateView,
     DeleteView,
 )
+from django.contrib.auth.models import AnonymousUser
 from django.contrib.admin.views.decorators import staff_member_required
 from django.utils.decorators import method_decorator
 from django.urls import reverse_lazy, reverse
@@ -33,10 +34,13 @@ class HomeView(ListView):
 def product_detail_view(request, pk):
     user = request.user
     product = models.Product.objects.get(pk=pk)
-    try:
-        wishs_models.Wish.objects.get(user=user, product=product)
-        is_wish = True
-    except wishs_models.Wish.DoesNotExist:
+    if user != AnonymousUser():
+        try:
+            wishs_models.Wish.objects.get(user=user, product=product)
+            is_wish = True
+        except wishs_models.Wish.DoesNotExist:
+            is_wish = False
+    else:
         is_wish = False
     return render(
         request,
