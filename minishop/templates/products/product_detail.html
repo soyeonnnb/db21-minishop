@@ -2,20 +2,47 @@
 {% load static %}
 {% block page_title %}{{product.name}} 상세{% endblock page_title %}
 {% block content %}
-<h1>product_Detail</h1>
-{{product}}
-{% if product.photo %}
-<img src="{{ product.photo.url }}" />
-{% endif %}
+<section class="py-5">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="row gx-4 gx-lg-5 align-items-center">
+            <span class="mb-3">{{product.categories}} / {{product.name}}</span>
+            <!-- Product image-->
+            <div class="col-md-6">
+                {% if product.photo %}
+                <img class="card-img-top mb-5 mb-md-0" src="{{ product.photo.url }}" alt="..." />
+                {% else %}
+                <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
+                {% endif %}
+            </div>
+            <div class="col-md-6">
+                <div class="small mb-1">{{product.categories}}</div>
+                <h1 class="display-5 fw-bolder">{{product.name}}</h1>
+                <br>
+                <div class="fs-5 mb-5">
+                    <span>{{product.price}}원</span>
+                </div>
+                <p class="lead">{{product.description}}</p>
+                {% if product.inventory == 0 %}
+                <div class="btn btn-outline-dark flex-shrink-0">
+                    재고 부족
+                </div>
+                {% else %}
+                <a href="{% url 'orders:create' product.pk %}" class="btn btn-outline-dark flex-shrink-0">
+                    주문하기
+                </a>
+                {% endif %}
 
-{% if product.inventory == 0 %}
-재고 부족
-{% else %}
-<a href="{% url 'orders:create' product.pk %}">주문하기</a>
-{% endif %}
-{% if is_wish %}
-<a href="{% url 'wishs:delete' pk=product.pk %}">찜취소</a>
-{% else %}
-<a href="{% url 'wishs:add' pk=product.pk %}">찜하기</a>
-{% endif %}
+                {% if is_wish %}
+                <a href="{% url 'wishs:delete' pk=product.pk %}" class="btn btn-outline-dark flex-shrink-0">
+                    찜취소
+                </a>
+                {% else %}
+                <a href="{% url 'wishs:add' pk=product.pk %}" class="btn btn-outline-dark flex-shrink-0">
+                    찜하기
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
 {% endblock %}
