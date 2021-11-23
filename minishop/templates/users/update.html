@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
+{% block page_title %}회원정보 수정{% endblock page_title %}
 {% block content %}
+{% include 'users/partials/navbar.html' %}
 <h1>User Update</h1>
 <form action="." method="post">
     {% csrf_token %}

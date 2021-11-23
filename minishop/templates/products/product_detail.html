@@ -1,10 +1,13 @@
 {% extends 'base.html' %}
 {% load static %}
+{% block page_title %}{{product.name}} 상세{% endblock page_title %}
 {% block content %}
 <h1>product_Detail</h1>
 {{product}}
+{% if product.photo %}
 <img src="{{ product.photo.url }}" />
-{{product.photo.file}}
+{% endif %}
+
 {% if product.inventory == 0 %}
 재고 부족
 {% else %}

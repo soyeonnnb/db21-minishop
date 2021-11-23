@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
+{% block page_title %}주문 수정{% endblock page_title %}
+{% include 'users/partials/navbar.html' %}
 {% if messages %}
 {% for message in messages %}
 <div>

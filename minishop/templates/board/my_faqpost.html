@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
+{% block page_title %}내가 쓴 FAQ{% endblock page_title %}
 {% include 'users/partials/navbar.html' %}
 <h1>내가 쓴 FAQ</h1>
 {% for post in post_list %}

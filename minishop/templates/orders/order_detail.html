@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
+{% block page_title %}{{order.product.name}} 주문 상세{% endblock page_title %}
 {% include 'users/partials/navbar.html' %}
 <h1>Order_Detail</h1>
 {{order}}
