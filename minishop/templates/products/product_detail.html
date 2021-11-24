@@ -18,14 +18,15 @@
                 <div class="small mb-1">{{product.categories}}</div>
                 <h1 class="display-5 fw-bolder">{{product.name}}</h1>
                 <br>
-                <div class="fs-5 mb-5">
+                <div class="fs-5 mb-2">
                     <span>{{product.price}}원</span>
+                </div>
+                <div class="fs-6 mb-5">
+                    <span>재고: {{product.inventory}}</span>
                 </div>
                 <p class="lead">{{product.description}}</p>
                 {% if product.inventory == 0 %}
-                <div class="btn btn-outline-dark flex-shrink-0">
-                    재고 부족
-                </div>
+                <button type="button" class="btn btn-outline-dark flex-shrink-0 " disabled>재고 부족</button>
                 {% else %}
                 <a href="{% url 'orders:create' product.pk %}" class="btn btn-outline-dark flex-shrink-0">
                     주문하기

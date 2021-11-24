@@ -1,16 +1,92 @@
 {% extends 'base.html' %}
 {% block page_title %}상품 추가{% endblock page_title %}
 {% block content %}
-{% if messages %}
-{% for message in messages %}
-<div>
-    {{ message|safe }}
+<div class="d-flex container mt-5">
+    {% include 'users/partials/staff_navbar.html' %}
+    <div class="container-fluid d-flex flex-column justify-content-between align-center" style=" width:1000px;">
+        <div class="mb-4 d-flex justify-content-between">
+            <h3>상품 추가</h3>
+        </div>
+        {% if messages %}
+        {% for message in messages %}
+        <div>
+            {{ message|safe }}
+        </div>
+        {% endfor %}
+        {% endif %}
+        <div class="d-flex justify-content-between mb-4">
+
+            <form action="." method="post" enctype="multipart/form-data">
+
+                {% csrf_token %}
+                <div class="row">
+
+
+
+
+
+
+                    <div class="col-12 mb-3">
+                        <div class="input-group has-validation">
+                            <span class="input-group-text">상품명</span>
+                            {{form.name}}
+                            <div class="invalid-feedback">
+                                상품명을 입력해주세요
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4 mb-3">
+                        <div class="input-group has-validation">
+                            <span class="input-group-text">가격</span>
+                            {{form.price}}
+                            <div class="invalid-feedback">
+                                가격을 입력해주세요
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4 mb-3">
+                        <div class="input-group has-validation">
+                            <span class="input-group-text">재고</span>
+                            {{form.inventory}}
+                            <div class="invalid-feedback">
+                                재고를 입력해주세요
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-4 mb-3">
+                        <div class="input-group has-validation">
+                            <span class="input-group-text">카테고리</span>
+                            {{form.categories}}
+                            <div class="invalid-feedback">
+                                상품 카테고리를 선택해주세요.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 mb-3">
+                        <div class="input-group has-validation">
+                            <span class="input-group-text">상품 설명</span>
+                            {{form.description}}
+                            <div class="invalid-feedback">
+                                상품 설명을 입력해주세요.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 mb-3">
+                        <div class="input-group">
+                            {{form.photo}}
+                            <label class="input-group-text" for="fileInput">Upload</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-end mt-4">
+                    <button class="btn btn-outline-dark flex-shrink-0">추가하기</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
-{% endfor %}
-{% endif %}
-<form action="." method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{form.as_p}}
-    <button>생성하기</button>
-</form>
+
 {% endblock %}

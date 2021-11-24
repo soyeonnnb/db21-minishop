@@ -14,3 +14,34 @@ class CreateProductForm(forms.ModelForm):
             "categories",
             "photo",
         )
+
+    def __init__(self, *args, **kwargs):
+        super(CreateProductForm, self).__init__(*args, **kwargs)
+
+        self.fields["name"].widget.attrs = {
+            "class": "form-control",
+            "id": "numberInput",
+            "type": "number",
+        }
+
+        self.fields["price"].widget.attrs = {
+            "class": "form-select",
+            "id": "priceInput",
+        }
+
+        self.fields["inventory"].widget.attrs = {
+            "class": "form-control",
+            "id": "inventoryInput",
+        }
+        self.fields["description"].widget.attrs = {
+            "class": "form-control",
+            "id": "descriptionInput",
+        }
+        self.fields["categories"].widget.attrs = {
+            "class": "form-select",
+            "id": "categoriesInput",
+        }
+        self.fields["photo"].widget.attrs = {
+            "class": "form-control",
+            "id": "photoInput",
+        }

@@ -10,6 +10,21 @@ class LoginForm(forms.Form):
     email = forms.EmailField()
     password = forms.CharField(widget=forms.PasswordInput)
 
+    def __init__(self, *args, **kwargs):
+        super(LoginForm, self).__init__(*args, **kwargs)
+
+        self.fields["email"].widget.attrs = {
+            "type": "email",
+            "class": "form-control",
+            "id": "floatingInput",
+        }
+
+        self.fields["password"].widget.attrs = {
+            "type": "password",
+            "class": "form-control",
+            "id": "floatingPassword",
+        }
+
     def clean(self):
         email = self.cleaned_data.get("email")
         password = self.cleaned_data.get("password")

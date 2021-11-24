@@ -1,6 +1,18 @@
-<div>
-    <a href="{% url 'users:my_info' %}">내 정보 보기</a>
-    <a href="{% url 'board:my_faq' %}">내가 쓴 글</a>
-    <a href="{% url 'wishs:my_wish' %}">찜한 목록</a>
-    <a href="{% url 'orders:my_order' %}">내 주문정보</a>
+<div style="width:250px;">
+
+    <ul class="list-group me-5 text-nowrap" id="mypage_url">
+        <label for="mypage_url" class="fw-bolder mb-3">마이페이지 링크</label>
+        <li class="list-group-item"><a href="{% url 'users:my_info' %}" class=" text-decoration-none text-black">내 정보
+                보기</a>
+        </li>
+        <li class="list-group-item"><a href="{% url 'board:my_faq' %}" class=" text-decoration-none text-black">내가 쓴
+                글</a>
+        </li>
+        <li class="list-group-item"><a href="{% url 'wishs:my_wish' %}" class=" text-decoration-none text-black">찜한
+                목록</a>
+        </li>
+        <li class="list-group-item"><a href="{% url 'orders:my_order' %}" class="text-decoration-none text-black">내
+                주문정보</a>
+        </li>
+    </ul>
 </div>

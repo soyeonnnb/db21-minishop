@@ -6,6 +6,7 @@ from django.urls import reverse_lazy, reverse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+from django.core.paginator import Paginator
 
 from . import models
 from . import forms
@@ -53,7 +54,10 @@ class InventoryException(Exception):
 @login_required
 def my_order_view(request):
     user = request.user
-    order_list = models.Order.objects.filter(user=user)
+    order_list = models.Order.objects.filter(user=user).order_by("-date_ordered")
+    paginator = Paginator(order_list, 15)
+    page_num = request.GET.get("page")
+    order_list = paginator.get_page(page_num)
     return render(request, "orders/order_list.html", {"order_list": order_list})
 
 

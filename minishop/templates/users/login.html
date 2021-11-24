@@ -1,9 +1,24 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block page_title %}로그인{% endblock page_title %}
 {% block content %}
-<form action="." method="post">
-    {% csrf_token %}
-    {{form}}
-    <button>로그인</button>
-</form>
+<div class="text-center mt-5 w-50 mx-auto">
+    <main class="form-signin border mt-5 p-5">
+        <form action="" method="POST">
+            {% csrf_token %}
+            <img class="mb-4" src="../../static/logo.png" alt="" width="72" height="72">
+            <h1 class="h3 mb-5 fw-normal">Please Log in</h1>
+            <div class="form-floating mb-4">
+                {{form.email}}
+                <label for="floatingInput">Email address</label>
+            </div>
+            <div class="form-floating mb-5">
+                {{form.password}}
+                <label for="floatingPassword">Password</label>
+            </div>
+            <button class="w-100 btn btn-lg btn-primary" type="submit">Log in</button>
+            <p class="mt-5 mb-3 text-muted">© 데베로 조인</p>
+        </form>
+    </main>
+</div>
 {% endblock %}

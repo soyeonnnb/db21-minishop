@@ -1,14 +1,92 @@
 {% extends 'base.html' %}
-{% block content %}
 {% block page_title %}내 주문정보{% endblock page_title %}
-{% include 'users/partials/navbar.html' %}
-<h1>order list</h1>
+{% block content %}
 
-{% for order in order_list %}
-<p>
-    <a href="{% url 'orders:detail' pk=order.pk %}">
-        {{order}}
-    </a>
-</p>
-{% endfor %}
+<div class="d-flex container mt-5">
+    {% include 'users/partials/navbar.html' %}
+    <div class="container-fluid d-flex flex-column justify-content-between align-center" style=" width:1000px;">
+        <div class="mb-4">
+            <h3>내 주문 내역</h3>
+        </div>
+        <div class="d-flex justify-content-between mb-4">
+            <div>
+                <table class="table align-middle">
+                    <thead>
+                        <tr>
+                            <th style="width:300px" scope="col">제품</th>
+                            <th style="width:100px" class="text-center" scope="col">수량</th>
+                            <th style="width:100px" class="text-center" scope="col">배송</th>
+                            <th style="width:200px" class="text-center" scope="col">주문일</th>
+                            <th style="width:200px" class="text-center" scope="col">상세보기</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for order in order_list %}
+                        <tr>
+                            <td><a class="text-decoration-none text-black"
+                                    href="{% url 'products:detail' pk=order.product.pk %}">{{order.product}}</a></td>
+                            <td class="text-center">
+                                {{order.number}}</td>
+                            <td class="text-center">
+                                {{order.delivery}}</td>
+                            <td class="text-center">
+                                {{order.date_ordered.year}}.{{order.date_ordered.month}}.{{order.date_ordered.day}}</td>
+                            <td>
+                                <div class="text-center">
+                                    <a href="{% url 'orders:detail' pk=order.pk %}"
+                                        class="btn btn-outline-dark flex-shrink-0 ">
+                                        상세보기</a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+
+
+        <!-- Paginator -->
+        <div class="d-flex justify-content-center">
+            <ul class="pagination ">
+                <!-- 이전 페이지 -->
+                {% if order_list.has_previous %}
+                <li class="page-item">
+                    <a href="?page={{order_list.previous_page_number}}" class="page-link">Previous</a>
+                </li>
+                {% else %}
+                <li class="page-item disabled">
+                    <a class="page-link">Previous</a>
+                </li>
+                {% endif %}
+
+
+                <!-- 페이지 링크들 -->
+                {% for n in order_list.paginator.page_range %}
+                {% if order_list.number == n %}
+                <li class="page-item active">
+                    <span class="page-link">{{ n }}</span>
+                </li>
+                {% elif n > order_list.number|add:'-5' and n < order_list.number|add:'5' %} <li class="page-item"><a
+                        class="page-link" href="?page={{ n }}">{{ n }}</a>
+                    </li>
+                    {% endif %}
+                    {% endfor %}
+
+                    <!-- 다음 페이지 -->
+                    {% if order_list.has_next %}
+                    <li class="page-item">
+                        <a href="?page={{order_list.next_page_number}}" class="page-link">Next</a>
+                    </li>
+                    {% else %}
+                    <li class="page-item disabled">
+                        <a class="page-link">Next</a>
+                    </li>
+                    {% endif %}
+            </ul>
+        </div>
+    </div>
+</div>
 {% endblock %}

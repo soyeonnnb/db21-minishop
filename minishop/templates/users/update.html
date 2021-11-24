@@ -1,14 +1,64 @@
 {% extends 'base.html' %}
 {% block page_title %}회원정보 수정{% endblock page_title %}
 {% block content %}
-{% include 'users/partials/navbar.html' %}
-<h1>User Update</h1>
-<form action="." method="post">
-    {% csrf_token %}
-    <p>nickname {{form.nickname}}</p>
-    <p>gender {{form.gender}}</p>
-    <p>birth {{form.birth}}</p>
-    <p>mobile {{form.mobile}}</p>
-    <button>수정하기</button>
-</form>
+<div class="d-flex container mt-5">
+    {% include 'users/partials/navbar.html' %}
+    <div class="container-fluid d-flex flex-column justify-content-between align-center" style=" width:1000px;">
+        <div class="mb-4">
+            <h3>내 정보 수정</h3>
+        </div>
+        <div class="d-flex justify-content-between mb-4">
+
+            <form action="." method="post">
+
+                {% csrf_token %}
+                <div class="row">
+
+                    <div class="col-12 mb-3">
+                        <div class="input-group has-validation">
+                            <span class="input-group-text">닉네임</span>
+                            {{form.nickname}}
+                            <div class="invalid-feedback">
+                                Your Nickname is required.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 mb-3">
+                        <div class="input-group has-validation">
+                            <span class="input-group-text">성별</span>
+                            {{form.gender}}
+                            <div class="invalid-feedback">
+                                Please select a valid gender.
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-12 mb-3">
+                        <div class="input-group has-validation">
+                            <span class="input-group-text">생년월일</span>
+                            {{form.birth}}
+                            <div class="invalid-feedback">
+                                2000-01-01 형식의 날짜를 입력해주세요.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 mb-3">
+                        <div class="input-group has-validation">
+                            <span class="input-group-text">전화번호</span>
+                            {{form.mobile}}
+                            <div class="invalid-feedback">
+                                0123456780 형식의 전화번호를 입력해주세요.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-end mt-4">
+                    <button class="btn btn-outline-dark flex-shrink-0">수정하기</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 {% endblock %}

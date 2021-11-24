@@ -1,14 +1,78 @@
 {% extends 'base.html' %}
 {% block page_title %}내가 찜한 목록{% endblock page_title %}
 {% block content %}
-{% include 'users/partials/navbar.html' %}
-<h1>wishlist</h1>
+<div class="d-flex container mt-5">
+    {% include 'users/partials/navbar.html' %}
+    <div class="container-fluid d-flex flex-column justify-content-between align-center" style=" width:1000px;">
+        <div class="mb-4">
+            <h3>내가 찜한 목록</h3>
+        </div>
+        <div class="d-flex justify-content-between mb-4">
+            <div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th style="width:800px" scope="col">제품</th>
+                            <th style="width:200px" class="text-center" scope="col">등록일</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for wish in wish_list %}
+                        <tr>
+                            <td><a class="text-decoration-none text-black"
+                                    href="{% url 'products:detail' pk=wish.product.pk %}">{{wish.product}}</a></td>
+                            <td class="text-center">
+                                {{wish.added_date.year}}.{{wish.added_date.month}}.{{wish.added_date.day}}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
-{% for wish in wish_list %}
-<p>
-    <a href="{% url 'products:detail' pk=wish.product.pk %}">
-        {{wish}}
-    </a>
-</p>
-{% endfor %}
+
+
+
+        <!-- Paginator -->
+        <div class="d-flex justify-content-center">
+            <ul class="pagination ">
+                <!-- 이전 페이지 -->
+                {% if wish_list.has_previous %}
+                <li class="page-item">
+                    <a href="?page={{wish_list.previous_page_number}}" class="page-link">Previous</a>
+                </li>
+                {% else %}
+                <li class="page-item disabled">
+                    <a class="page-link">Previous</a>
+                </li>
+                {% endif %}
+
+
+                <!-- 페이지 링크들 -->
+                {% for n in wish_list.paginator.page_range %}
+                {% if wish_list.number == n %}
+                <li class="page-item active">
+                    <span class="page-link">{{ n }}</span>
+                </li>
+                {% elif n > wish_list.number|add:'-5' and n < wish_list.number|add:'5' %} <li class="page-item"><a
+                        class="page-link" href="?page={{ n }}">{{ n }}</a>
+                    </li>
+                    {% endif %}
+                    {% endfor %}
+
+                    <!-- 다음 페이지 -->
+                    {% if wish_list.has_next %}
+                    <li class="page-item">
+                        <a href="?page={{wish_list.next_page_number}}" class="page-link">Next</a>
+                    </li>
+                    {% else %}
+                    <li class="page-item disabled">
+                        <a class="page-link">Next</a>
+                    </li>
+                    {% endif %}
+            </ul>
+        </div>
+    </div>
+</div>
+
 {% endblock %}

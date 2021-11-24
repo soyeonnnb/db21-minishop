@@ -4,9 +4,11 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView
+from django.core.paginator import Paginator
 from django.urls import reverse_lazy, reverse
 from django.views import View
 from django.views.generic import FormView, UpdateView
+
 
 from . import forms
 from . import models
@@ -80,13 +82,51 @@ class UserUpdateView(UpdateView, LoggedInOnlyView):
         "birth",
         "mobile",
     )
-    success_url = reverse_lazy("users:my_page")
+    success_url = reverse_lazy("users:my_info")
 
     def get_object(self, queryset=None):
         return self.request.user
 
+    # 폼 입력방식 커스텀
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class=form_class)
+        form.fields["nickname"].widget.attrs = {
+            "placeholder": "Nickname",
+            "class": "form-control",
+            "id": "nicknameInput",
+            "aria-describedby": "nicknameInput",
+            "aria-label": "Nickname",
+            "type": "text",
+        }
+        form.fields["gender"].widget.attrs = {
+            "class": "form-select",
+            "id": "genderInput",
+            "aria-describedby": "genderInput",
+            "aria-label": "Gender",
+        }
+        form.fields["birth"].widget.attrs = {
+            "placeholder": "2000-01-01",
+            "class": "form-control",
+            "id": "birthInput",
+            "aria-describedby": "birthInput",
+            "aria-label": "Birth",
+        }
+        form.fields["mobile"].widget.attrs = {
+            "placeholder": "01234567890",
+            "class": "form-control",
+            "id": "mobileInput",
+            "aria-describedby": "mobileInput",
+            "aria-label": "Mobile",
+        }
+        return form
+
 
 @staff_member_required
 def staff_view(request):
-    product_list = product_models.Product.objects.all()
-    return render(request, "users/staff.html", {"product_list": product_list})
+    product_list = product_models.Product.objects.filter().order_by("created_at")
+    paginator = Paginator(product_list, 10)
+    page_num = request.GET.get("page")
+    product_list = paginator.get_page(page_num)
+    return render(
+        request, "products/product_manage.html", {"product_list": product_list}
+    )

@@ -1,12 +1,52 @@
 {% extends 'base.html' %}
 {% block page_title %}내 정보 보기{% endblock page_title %}
 {% block content %}
-{% include 'users/partials/navbar.html' %}
-<h1>User info</h1>
-<p>email {{user_info.email}}</p>
-<p>nickname {{user_info.nickname}}</p>
-<p>gender {{user_info.gender}}</p>
-<p>birth {{user_info.birth}}</p>
-<p>mobile {{user_info.mobile}}</p>
-<a href="{% url 'users:update' %}">수정하기</a>
+<div class="d-flex container mt-5">
+    {% include 'users/partials/navbar.html' %}
+    <div class="container-fluid d-flex flex-column justify-content-between align-center" style=" width:1000px;">
+        <div class="mb-4">
+            <h3>내 정보</h3>
+        </div>
+        <div class="d-flex justify-content-between mb-4">
+            <div>
+                <table class="table text-nowrap align-middle text-center w-100">
+                    <tbody>
+                        <tr>
+                            <th class="table-secondary" style="width:200px">이메일</th>
+                            <td style="width:800px">{{user_info.email}}</td>
+                        </tr>
+                        <tr>
+                            <th class="table-secondary">닉네임</th>
+                            <td>{{user_info.nickname}}</td>
+                        </tr>
+                        <tr>
+                            <th class="table-secondary">성별</th>
+                            <td>{{user_info.gender}}</td>
+                        </tr>
+                        <tr>
+                            <th class="table-secondary">생일</th>
+                            <td>{% if user_info.birth %}
+                                {{user_info.birth}}
+                                {% else %}
+                                없음
+                                {% endif %}</td>
+                        </tr>
+                        <tr>
+                            <th class="table-secondary">전화번호</th>
+                            <td>{% if user_info.mobile %}
+                                {{user_info.mobile}}
+                                {% else %}
+                                없음
+                                {% endif %}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="text-end">
+            <a href="{% url 'users:update' %}" class="btn btn-outline-dark flex-shrink-0">수정하기</a>
+        </div>
+    </div>
+</div>
 {% endblock %}

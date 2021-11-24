@@ -15,13 +15,17 @@ class FAQPost(models.Model):
     def __str__(self):
         return self.title
 
+    def has_comments(self):
+        all_comments = self.comments.all()
+        return len(all_comments) > 0
+
 
 class FAQComment(models.Model):
 
     """FAQ Comment Definition"""
 
     user = models.ForeignKey("users.User", on_delete=models.CASCADE)
-    post = models.ForeignKey(FAQPost, on_delete=models.CASCADE)
+    post = models.ForeignKey(FAQPost, on_delete=models.CASCADE, related_name="comments")
     comment = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

@@ -26,7 +26,7 @@ class HomeView(ListView):
     model = models.Product
     paginate_by = 12
     paginate_orphans = 4
-    ordering = "created_at"
+    ordering = "-created_at"
     context_object_name = "products"
 
 
@@ -77,7 +77,55 @@ class UpdateProductView(users_mixins.LoggedInOnlyView, UpdateView):
         "photo",
         "discountinue",
     )
-    success_message = "Product Updated"
+    success_message = "상품이 수정되었습니다"
+    # 폼 입력방식 커스텀
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class=form_class)
+        form.fields["name"].widget.attrs = {
+            "placeholder": "상품명",
+            "class": "form-control",
+            "id": "nameInput",
+            "aria-describedby": "nameInput",
+            "aria-label": "Name",
+            "type": "text",
+        }
+        form.fields["price"].widget.attrs = {
+            "class": "form-control",
+            "id": "priceInput",
+            "aria-describedby": "priceInput",
+            "aria-label": "Price",
+        }
+        form.fields["inventory"].widget.attrs = {
+            "class": "form-control",
+            "id": "inventoryInput",
+            "aria-describedby": "inventoryInput",
+            "aria-label": "Inventory",
+        }
+        form.fields["description"].widget.attrs = {
+            "class": "form-control",
+            "id": "descriptionInput",
+            "aria-describedby": "descriptionInput",
+            "aria-label": "Description",
+        }
+        form.fields["categories"].widget.attrs = {
+            "class": "form-select",
+            "id": "categoriesInput",
+            "aria-describedby": "categoriesInput",
+            "aria-label": "Categories",
+        }
+        form.fields["photo"].widget.attrs = {
+            "class": "form-control",
+            "id": "photoInput",
+        }
+
+        form.fields["discountinue"].widget.attrs = {
+            "class": "form-check-input",
+            "type": "checkbox",
+            "id": "discountinueInput",
+            "aria-describedby": "discountinueInput",
+            "aria-label": "Discountinue",
+        }
+        return form
 
 
 @method_decorator(staff_member_required, name="dispatch")

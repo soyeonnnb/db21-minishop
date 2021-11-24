@@ -1,13 +1,75 @@
 {% extends 'base.html' %}
-{% block content %}
 {% block page_title %}{{order.product.name}} 주문 상세{% endblock page_title %}
-{% include 'users/partials/navbar.html' %}
-<h1>Order_Detail</h1>
-{{order}}
-{% if order.delivery %}
-<h5>배송되어 주문이 수정 및 취소 불가합니다.</h5>
-{% else %}
-<a href="{% url 'orders:update' pk=order.pk %}">주문 수정하기</a>
-<a href="{% url 'orders:delete' pk=order.pk %}">주문 취소하기</a>
-{% endif %}
+{% block content %}
+
+<div class="d-flex container mt-5">
+    {% include 'users/partials/navbar.html' %}
+    <div class="container-fluid d-flex flex-column justify-content-between align-center" style=" width:1000px;">
+        <div class="mb-4">
+            <h3>주문 상세정보</h3>
+        </div>
+        {% if messages %}
+        {% for message in messages %}
+        <div>
+            {{ message|safe }}
+        </div>
+        {% endfor %}
+        {% endif %}
+        <div class="d-flex justify-content-between mb-4">
+            <div>
+                <table class="table text-nowrap align-middle text-center w-100">
+                    <tbody>
+                        <tr>
+                            <th class="table-secondary" style="width:200px">주문번호</th>
+                            <td style="width:800px">{{order.pk}}</td>
+                        </tr>
+                        <tr>
+                            <th class="table-secondary">주문 상품</th>
+                            <td><a href="{% url 'products:detail' pk=order.product.pk %}"
+                                    class="text-decoration-none text-black">{{order.product}}</a></td>
+                        </tr>
+                        <tr>
+                            <th class="table-secondary">주문 수량</th>
+                            <td>{{order.number}}</td>
+                        </tr>
+                        <tr>
+                            <th class="table-secondary">주문 날짜</th>
+                            <td>{{order.date_ordered}}</td>
+                        </tr>
+                        <tr>
+                            <th class="table-secondary">결제 방법</th>
+                            <td>{{order.method}}</td>
+                        </tr>
+                        <tr>
+                            <th class="table-secondary">배송 주소</th>
+                            <td>{{order.address}}</td>
+                        </tr>
+                        <tr>
+                            <th class="table-secondary">배송 여부</th>
+                            <td>
+                                {% if order.delivery %}
+                                배송 완료
+                                {% else %}
+                                배송 미완료
+                                {% endif %}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% if order.delivery %}
+        <h5>배송되어 주문이 수정 및 취소 불가합니다.</h5>
+        {% else %}
+        <div class="d-flex justify-content-end">
+            <div>
+                <a href="{% url 'orders:update' pk=order.pk %}" class="btn btn-outline-dark flex-shrink-0">주문 수정하기</a>
+            </div>
+            <div class="ms-4">
+                <a href="{% url 'orders:delete' pk=order.pk %}" class="btn btn-outline-dark flex-shrink-0">주문 취소하기</a>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
 {% endblock %}

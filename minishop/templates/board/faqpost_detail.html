@@ -1,19 +1,36 @@
 {% extends 'base.html' %}
-{% block content %}
 {% block page_title %}FAQ 게시물{% endblock page_title %}
-<h1>faq post_Detail</h1>
-{{post}}
-<div>
-    답변:
-    {% for comment in comments %}
-    {{comment.comment}}
-    {% endfor %}
-    {% if user.is_active and user.is_staff %}
-    <form action="{% url 'board:comment_create' pk=post.pk %}" method="POST">
-        {% csrf_token %}
-        {{comment_form}}
-        <button>답변달기</button>
-    </form>
-    {% endif %}
+{% block content %}
+<div class="d-flex container mt-5">
+    {% include 'board/partials/navbar.html' %}
+    <div class="container-fluid d-flex flex-column justify-content-between align-center" style=" width:1000px;">
+        <div class="mb-2">
+            <h3>{{post.title}}</h3>
+        </div>
+        <div class="border p-3 rounded">
+            {{post.body}}
+        </div>
+        <div class="my-5">
+            <h5>답변</h5>
+            <ul class="list-group list-group-flush">
+                {% for comment in comments %}
+                <li class="list-group-item">{{comment.user.nickname}} : {{comment.comment}}</li>
+                {% endfor %}
+            </ul>
+
+        </div>
+
+        {% if user.is_active and user.is_staff %}
+        <form action="{% url 'board:comment_create' pk=post.pk %}" method="POST">
+            {% csrf_token %}
+            <div class="input-group mb-3">
+                <span class="input-group-text">답변</span>
+                {{comment_form.comment}}
+                <button class="btn btn-outline-secondary">작성</button>
+            </div>
+
+        </form>
+        {% endif %}
+    </div>
 </div>
 {% endblock %}

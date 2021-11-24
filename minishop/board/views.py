@@ -3,6 +3,7 @@ from django.shortcuts import get_object_or_404, render
 from django.views.generic import ListView, CreateView
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 
 from . import models
 from . import forms
@@ -13,9 +14,9 @@ class FAQListView(ListView):
     """FAQListView Definition"""
 
     model = models.FAQPost
-    paginate_by = 12
+    paginate_by = 15
     paginate_orphans = 4
-    ordering = "created_at"
+    ordering = "-created_at"
     context_object_name = "posts"
 
 
@@ -64,5 +65,8 @@ def faq_post_create(request):
 
 def my_faqpost_view(request):
     user = request.user
-    post_list = models.FAQPost.objects.filter(user=user)
+    post_list = models.FAQPost.objects.filter(user=user).order_by("-created_at")
+    paginator = Paginator(post_list, 15)
+    page_num = request.GET.get("page")
+    post_list = paginator.get_page(page_num)
     return render(request, "board/my_faqpost.html", {"post_list": post_list})
