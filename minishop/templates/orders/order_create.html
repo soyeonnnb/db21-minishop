@@ -36,11 +36,12 @@
                         <div class="input-group has-validation">
                             <span class="input-group-text">주문 수량</span>
                             {{form.number}}
-                            <div class="invalid-feedback">
-                                주문수량을 입력해주세요.
-                            </div>
-
                         </div>
+                        {% if form.number.errors %}
+                        {% for error in form.number.errors %}
+                        <span class="text-red-700 font-medium text-sm">{{error}}</span>
+                        {% endfor %}
+                        {% endif %}
                     </div>
                     <div class="col-12 mb-3">
                         <div class="input-group has-validation">

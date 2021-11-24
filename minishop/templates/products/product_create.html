@@ -20,12 +20,6 @@
 
                 {% csrf_token %}
                 <div class="row">
-
-
-
-
-
-
                     <div class="col-12 mb-3">
                         <div class="input-group has-validation">
                             <span class="input-group-text">상품명</span>
@@ -39,19 +33,23 @@
                         <div class="input-group has-validation">
                             <span class="input-group-text">가격</span>
                             {{form.price}}
-                            <div class="invalid-feedback">
-                                가격을 입력해주세요
-                            </div>
                         </div>
+                        {% if form.price.errors %}
+                        {% for error in form.price.errors %}
+                        <span class="text-red-700 font-medium text-sm">{{error}}</span>
+                        {% endfor %}
+                        {% endif %}
                     </div>
                     <div class="col-4 mb-3">
                         <div class="input-group has-validation">
                             <span class="input-group-text">재고</span>
                             {{form.inventory}}
-                            <div class="invalid-feedback">
-                                재고를 입력해주세요
-                            </div>
                         </div>
+                        {% if form.inventory.errors %}
+                        {% for error in form.inventory.errors %}
+                        <span class="text-red-700 font-medium text-sm">{{error}}</span>
+                        {% endfor %}
+                        {% endif %}
                     </div>
 
 

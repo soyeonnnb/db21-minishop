@@ -90,11 +90,11 @@ def order_detail(request, pk):
 
 # 주문 수정 함수
 def order_update(request, pk):
+    order = models.Order.objects.get(pk=pk)
+    product = product_models.Product.objects.get(pk=order.product.pk)
     try:
         if request.method == "POST":
-            order = models.Order.objects.get(pk=pk)
             form = forms.UpdateOrderForm(request.POST)
-            product = product_models.Product.objects.get(pk=order.product.pk)
             if not product:
                 return redirect(reverse("core:home"))
             if form.is_valid():
@@ -113,15 +113,25 @@ def order_update(request, pk):
                     product.save()
                     order.save()
                 messages.success(request, "주문이 수정되었습니다.")
-                return redirect(reverse_lazy("orders:detail", kwargs={"pk": pk}))
+                return redirect(
+                    reverse_lazy("orders:detail", kwargs={"pk": pk, "product": product})
+                )
 
         else:
             order = models.Order.objects.get(pk=pk)
             form = forms.UpdateOrderForm(instance=order)
-        return render(request, "orders/order_update.html", {"form": form, "pk": pk})
+        return render(
+            request,
+            "orders/order_update.html",
+            {"form": form, "pk": pk, "product": product},
+        )
     except InventoryException:
         messages.error(request, "재고부족")
-        return render(request, "orders/order_update.html", {"form": form, "pk": pk})
+        return render(
+            request,
+            "orders/order_update.html",
+            {"form": form, "pk": pk, "product": product},
+        )
 
 
 # 주문 취소 함수
