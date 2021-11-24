@@ -20,12 +20,14 @@
             <div class="col mb-5">
                 <div class="card h-100">
                     <!-- Product image-->
-                    {% if product.photo %}
-                    <img class="card-img-top mb-5 mb-md-0" src="{{ product.photo.url }}" alt="..."
-                        style="height:50%;" />
-                    {% else %}
-                    <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
-                    {% endif %}
+                    <figure class="image_wrapper">
+                        {% if product.photo %}
+                        <img class="card-img-top mb-5 mb-md-0 child" src="{{ product.photo.url }}" alt="..." />
+                        {% else %}
+                        <img class="card-img-top child" src="https://dummyimage.com/500x500/dee2e6/6c757d&text=None"
+                            alt="..." />
+                        {% endif %}
+                    </figure>
                     <!-- Product details-->
                     <div class="card-body p-4">
                         <div class="text-center">
