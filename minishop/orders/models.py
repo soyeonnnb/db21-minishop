@@ -20,7 +20,7 @@ class Order(models.Model):
     product = models.ForeignKey(
         "products.Product", on_delete=models.CASCADE
     )  # 상품 애트리뷰트 foreign key 가 사라지면 해당 객체도 삭제
-    number = models.IntegerField(default=1)  # 주문 수량 애트리뷰트
+    number = models.PositiveIntegerField(default=1)  # 주문 수량 애트리뷰트
     date_ordered = models.DateTimeField(auto_now_add=True)  # 주문 날짜 애트리뷰트
     method = models.CharField(
         max_length=4, choices=METHOD_CHOICES, default=METHOD_CASH

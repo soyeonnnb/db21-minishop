@@ -22,8 +22,8 @@ class Product(models.Model):
     """Product Model Definition"""
 
     name = models.CharField(max_length=100)  # 이름 애트리뷰트
-    price = models.IntegerField()  # 가격 애트리뷰트
-    inventory = models.IntegerField()  # 재고 애트리뷰트
+    price = models.PositiveIntegerField()  # 가격 애트리뷰트
+    inventory = models.PositiveIntegerField()  # 재고 애트리뷰트
     description = models.TextField()  # 설명 애트리뷰트
     categories = models.ForeignKey(
         "ProductCategory",
