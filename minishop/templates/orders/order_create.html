@@ -1,16 +1,73 @@
 {% extends 'base.html' %}
-{% block content %}
 {% block page_title %}상품 주문{% endblock page_title %}
-{% if messages %}
-{% for message in messages %}
-<div>
-    {{ message|safe }}
+{% block content %}
+<div class="d-flex container mt-5">
+    <div class="container-fluid d-flex flex-column justify-content-center align-center" style=" width:1000px;">
+        <div class="mb-4 d-flex justify-content-between">
+            <h3>상품 주문</h3>
+        </div>
+        {% if messages %}
+        {% for message in messages %}
+        <div>
+            {{ message|safe }}
+        </div>
+        {% endfor %}
+        {% endif %}
+        <div class="d-flex justify-content-between mb-4">
+
+            <form action="." method="post">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-12 mb-3">
+                        <div class="input-group has-validation">
+                            <span class="input-group-text">상품명</span>
+                            <input class="form-control bg-white" type="text" value="{{product.name}}"
+                                aria-label="Disabled input example" disabled readonly>
+                        </div>
+                    </div>
+                    <div class="col-12 mb-3">
+                        <div class="input-group has-validation">
+                            <span class="input-group-text">가격</span>
+                            <input class="form-control bg-white" type="text" value="{{product.price}}"
+                                aria-label="Disabled input example" disabled readonly>
+                        </div>
+                    </div>
+                    <div class="col-12 mb-3">
+                        <div class="input-group has-validation">
+                            <span class="input-group-text">주문 수량</span>
+                            {{form.number}}
+                            <div class="invalid-feedback">
+                                주문수량을 입력해주세요.
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-12 mb-3">
+                        <div class="input-group has-validation">
+                            <span class="input-group-text">결제방법</span>
+                            {{form.method}}
+                            <div class="invalid-feedback">
+                                결제방법을 선택해주세요.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 mb-3">
+                        <div class="input-group has-validation">
+                            <span class="input-group-text">주소</span>
+                            {{form.address}}
+                            <div class="invalid-feedback">
+                                주소를 입력해주세요.
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="text-end mt-4">
+                    <button class="btn btn-outline-dark flex-shrink-0">주문하기</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
-{% endfor %}
-{% endif %}
-<form action="." method="post">
-    {% csrf_token %}
-    {{form}}
-    <button>주문하기</button>
-</form>
 {% endblock %}

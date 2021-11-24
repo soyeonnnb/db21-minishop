@@ -1,10 +1,8 @@
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib import messages
-from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView
-from django.core.paginator import Paginator
 from django.urls import reverse_lazy, reverse
 from django.views import View
 from django.views.generic import FormView, UpdateView
@@ -14,8 +12,6 @@ from . import forms
 from . import models
 from . import mixins
 from .mixins import LoggedInOnlyView
-
-from products import models as product_models
 
 
 # 로그아웃 method
@@ -119,14 +115,3 @@ class UserUpdateView(UpdateView, LoggedInOnlyView):
             "aria-label": "Mobile",
         }
         return form
-
-
-@staff_member_required
-def staff_view(request):
-    product_list = product_models.Product.objects.filter().order_by("created_at")
-    paginator = Paginator(product_list, 10)
-    page_num = request.GET.get("page")
-    product_list = paginator.get_page(page_num)
-    return render(
-        request, "products/product_manage.html", {"product_list": product_list}
-    )

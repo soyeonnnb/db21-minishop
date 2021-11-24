@@ -11,6 +11,13 @@
         </div>
     </div>
 </header>
+{% if messages %}
+{% for message in messages %}
+<div>
+    {{ message|safe }}
+</div>
+{% endfor %}
+{% endif %}
 <!-- Section-->
 <section class="pt-5 pb-3">
     <div class="container px-4 px-lg-5 mt-5">

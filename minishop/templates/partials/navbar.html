@@ -13,11 +13,11 @@
             <ul class="navbar-nav d-flex">
                 {% if user.is_authenticated %}
                 {% if user.is_active and user.is_staff %}
-                <li class="nav-item"><a class="nav-link" href="{% url 'users:staff' %}">STAFF ONLY</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'products:manage' %}">STAFF ONLY</a></li>
                 {% endif %}
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button"
-                        data-bs-toggle="dropdown" aria-expanded="false">FAQ 페이지</a>
+                        data-bs-toggle="dropdown" aria-expanded="false">마이페이지</a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item" href="{% url 'users:my_info'%}">내 정보 보기</a></li>
                         <li><a class="dropdown-item" href="{% url 'board:my_faq' %}">내가 쓴 글</a></li>

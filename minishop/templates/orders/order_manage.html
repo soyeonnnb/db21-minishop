@@ -4,15 +4,8 @@
 <div class="d-flex container mt-5">
     {% include 'users/partials/staff_navbar.html' %}
     <div class="container-fluid d-flex flex-column justify-content-between align-center" style=" width:1000px;">
-        <div class="mb-4 d-flex justify-content-between">
-            <div>
-                <h3>상품 관리</h3>
-            </div>
-            <div>
-                <a href="{% url 'products:create' %}" class="btn btn-outline-dark flex-shrink-0">
-                    상품추가
-                </a>
-            </div>
+        <div class="mb-4">
+            <h3>주문 관리</h3>
         </div>
         {% if messages %}
         {% for message in messages %}
@@ -26,35 +19,42 @@
                 <table class="table align-middle text-nowrap">
                     <thead>
                         <tr>
-                            <th style="width:50px" class="text-center" scope="col">상품번호</th>
-                            <th style="width:300px" class="text-center" scope="col">상품명</th>
-                            <th style="width:100px" class="text-center" scope="col">가격</th>
-                            <th style="width:100px" class="text-center" scope="col">재고</th>
-                            <th style="width:150px" class="text-center" scope="col">카테고리</th>
-                            <th style="width:100px" class="text-center" scope="col">단종여부</th>
-                            <th style="width:100px" class="text-center" scope="col">수정</th>
-                            <th style="width:100px" class="text-center" scope="col">삭제</th>
+                            <th style="width:50px" class="text-center" scope="col">주문번호</th>
+                            <th style="width:150px" class="text-center" scope="col">주문자</th>
+                            <th style="width:350px" class="text-center" scope="col">상품</th>
+                            <th style="width:50px" class="text-center" scope="col">수량</th>
+                            <th style="width:150px" class="text-center" scope="col">주문 날짜</th>
+                            <th style="width:50px" class="text-center" scope="col">결제 방식</th>
+                            <th style="width:100px" class="text-center" scope="col">배송 여부</th>
+                            <th style="width:100px" class="text-center" scope="col">배송 처리</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {% for product in product_list %}
+                        {% for order in order_list %}
                         <tr>
-                            <td class="text-center">{{product.pk}}</td>
-                            <td class="text-center text-decoration-none"><a
-                                    href="{% url 'products:detail' pk=product.pk %}"
-                                    class=" text-decoration-none text-black fw-bolder">{{product.name}}</a></td>
-                            <td class="text-center">{{product.price}}</td>
-                            <td class="text-center">{{product.inventory}}</td>
-                            <td class="text-center">{{product.categories}}</td>
-                            <td class="text-center">{{product.discountinue}}</td>
-                            <td class="text-center"><a href="{% url 'products:update' pk=product.pk %}"
-                                    class="btn btn-outline-dark flex-shrink-0">
-                                    수정</a>
+                            <td class="text-center text-decoration-none"><a href="{% url 'orders:detail' pk=order.pk %}"
+                                    class=" text-decoration-none text-black fw-bolder">{{order.pk}}</a></td>
+                            <td class="text-center text-decoration-none">{{order.user.nickname}}</td>
+                            <td class="text-center"><a href="{% url 'products:detail' pk=order.product.pk %}"
+                                    class=" text-decoration-none text-black ">{{order.product}}</a></td>
+                            <td class="text-center">{{order.number}}</td>
+                            <td class="text-center">
+                                {{order.date_ordered.year}}.{{order.date_ordered.month}}.{{order.date_ordered.day}}</td>
+                            <td class="text-center">{{order.method}}</td>
+                            <td class="text-center">
+                                {{order.delivery}}</td>
+                            {% if order.delivery %}
+                            <td class="text-center">
+                                <button class="btn btn-outline-dark flex-shrink-0" disabled>
+                                    완료</button>
                             </td>
-                            <td class="text-center"><a href="{% url 'products:delete' pk=product.pk %}"
+                            {% else %}
+                            <td class="text-center"><a href="{% url 'orders:delivery' pk=order.pk %}"
                                     class="btn btn-outline-dark flex-shrink-0">
-                                    삭제</a>
+                                    처리</a>
                             </td>
+                            {% endif %}
+
 
                         </tr>
                         {% endfor %}

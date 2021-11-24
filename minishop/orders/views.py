@@ -1,12 +1,13 @@
 from django.shortcuts import render
 from django.db import transaction
-from django.views.generic import DetailView
+from django.views.generic import DetailView, ListView
 from django.shortcuts import redirect
 from django.urls import reverse_lazy, reverse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.core.paginator import Paginator
+from django.contrib.admin.views.decorators import staff_member_required
 
 from . import models
 from . import forms
@@ -39,10 +40,18 @@ def create_order(request, pk):
         else:
             form = forms.CreateOrderForm()
             product = product_models.Product.objects.get(pk=pk)
-        return render(request, "orders/order_create.html", {"form": form, "pk": pk})
+        return render(
+            request,
+            "orders/order_create.html",
+            {"form": form, "pk": pk, "product": product},
+        )
     except InventoryException:
         messages.error(request, "재고부족")
-        return render(request, "orders/order_create.html", {"form": form, "pk": pk})
+        return render(
+            request,
+            "orders/order_create.html",
+            {"form": form, "pk": pk, "product": product},
+        )
 
 
 # 재고부족 에러
@@ -66,6 +75,17 @@ def my_order_view(request):
 class OrderDetailView(DetailView):
 
     model = models.Order
+
+
+@login_required
+def order_detail(request, pk):
+    user = request.user
+    order = models.Order.objects.get(pk=pk)
+    if user == order.user or user.is_staff == True:
+        return render(request, "orders/order_detail.html", {"order": order})
+    else:
+        messages.error(request, "접근 권한이 없습니다.")
+        return reverse_lazy("core:home")
 
 
 # 주문 수정 함수
@@ -120,3 +140,23 @@ def order_delete(request, pk):
         order.delete()
         messages.success(request, "주문이 삭제되었습니다.")
     return redirect(reverse_lazy("orders:my_order"))
+
+
+@method_decorator(staff_member_required, name="dispatch")
+class OrderManageView(ListView):
+    model = models.Order
+    paginate_by = 15
+    paginate_orphans = 4
+    ordering = "-date_ordered"
+    context_object_name = "order_list"
+    template_name = "orders/order_manage.html"
+
+
+@staff_member_required
+def order_delivery(request, pk):
+    order = models.Order.objects.get(pk=pk)
+    with transaction.atomic():
+        order.delivery = True
+        order.save()
+        messages.success(request, "배송처리가 완료되었습니다.")
+    return redirect(reverse("orders:manage"))

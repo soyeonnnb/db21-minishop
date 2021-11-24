@@ -11,6 +11,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.utils.decorators import method_decorator
 from django.urls import reverse_lazy, reverse
 from django.shortcuts import redirect
+from django.core.paginator import Paginator
 
 
 from . import models
@@ -127,6 +128,9 @@ class UpdateProductView(users_mixins.LoggedInOnlyView, UpdateView):
         }
         return form
 
+    def get_success_url(self):
+        return reverse("products:manage")
+
 
 @method_decorator(staff_member_required, name="dispatch")
 class DeleteProductView(users_mixins.LoggedInOnlyView, DeleteView):
@@ -135,7 +139,18 @@ class DeleteProductView(users_mixins.LoggedInOnlyView, DeleteView):
     context_object_name = "product"
 
     def get_success_url(self):
-        return reverse_lazy("users:staff")
+        return reverse_lazy("products:manage")
 
     def get(self, request, *args, **kwargs):
         return self.post(request, *args, **kwargs)
+
+
+@method_decorator(staff_member_required, name="dispatch")
+class ProductManageView(ListView):
+
+    model = models.Product
+    paginate_by = 15
+    paginate_orphans = 4
+    ordering = "-created_at"
+    context_object_name = "product_list"
+    template_name = "products/product_manage.html"
