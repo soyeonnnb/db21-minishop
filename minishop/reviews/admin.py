@@ -12,11 +12,13 @@ class ReviewAdmin(admin.ModelAdmin):
         (
             None,
             {
-                "fields": ("user", "order", "review"),
+                "fields": ("user", "order", "review", "rating"),
             },
         ),
     )
 
-    list_display = ("user", "order", "review", "created_at")
+    list_display = ("user", "order", "review", "created_at", "rating")
 
-    ordering = ("-created_at", "user", "order")
+    ordering = ("-created_at", "user", "order", "rating")
+
+    list_filter = ("rating",)

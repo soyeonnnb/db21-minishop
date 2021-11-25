@@ -17,6 +17,10 @@ class ProductCategory(models.Model):
         verbose_name_plural = "Product Categories"
 
 
+def product_directory_path(instance, filename):
+    return "faq_product/product_{}/{}".format(instance.id, filename)
+
+
 # Create your models here.
 class Product(models.Model):
 
@@ -36,7 +40,7 @@ class Product(models.Model):
         on_delete=models.SET_NULL,
     )  # 카테고리 애트리뷰트
     photo = models.ImageField(
-        blank=True, null=True, upload_to="product_photo"
+        blank=True, null=True, upload_to=product_directory_path
     )  # 사진 애트리뷰트
     created_at = models.DateTimeField(auto_now_add=True)  # 상품 생성 날짜 애트리뷰트
     discountinue = models.BooleanField(default=False)  # 단종여부 애트리뷰트

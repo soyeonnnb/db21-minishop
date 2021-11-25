@@ -31,7 +31,8 @@
                             </td>
                             <td class="text-center">
                                 <a class="text-decoration-none text-black"
-                                    href="{% url 'products:detail' pk=review.order.product.pk %}">{{review.order.product}}</a>
+                                    href="{% url 'products:detail' pk=review.product.pk %}">{{review.order.product}}</a>
+
                             </td>
                             <td class="text-center">
                                 {{review.review}}</td>
@@ -47,7 +48,7 @@
                                     수정</a>
                             </td>
                             <td class="text-center"><a href="{% url 'reviews:delete' pk=review.pk %}"
-                                    class="btn btn-outline-dark flex-shrink-0">
+                                    class="btn btn-outline-danger flex-shrink-0 ">
                                     삭제</a>
                             </td>
                         </tr>

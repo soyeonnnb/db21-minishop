@@ -8,6 +8,11 @@
             <h3>{{post.title}}</h3>
         </div>
         <span class="text-end">작성일: {{post.created_at}}</span>
+        {% if post.photo %}
+        <div class="border p-3 rounded mt-4 w-100">
+            <img src='{{post.photo.url}}' class="w-100">
+        </div>
+        {% endif %}
         <div class="border p-3 rounded mt-4">
             {{post.body}}
         </div>

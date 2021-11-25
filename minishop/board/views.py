@@ -1,12 +1,14 @@
 from django.utils import timezone
-from django.shortcuts import get_object_or_404, render
-from django.views.generic import ListView, CreateView
-from django.shortcuts import redirect
+from django.utils.decorators import method_decorator
+from django.shortcuts import get_object_or_404, render, redirect
+from django.urls import reverse, reverse_lazy
+from django.views.generic import ListView, UpdateView, DeleteView
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 
 from . import models
 from . import forms
+from users import mixins as users_mixins
 
 # Create your views here.
 class FAQListView(ListView):
@@ -52,6 +54,7 @@ def faq_post_create(request):
             finished_form = form.save(commit=False)
             finished_form.user = request.user
             finished_form.save()
+            request.FILES["imagename"].name
             return redirect(
                 "board:detail",
                 finished_form.pk,
@@ -70,3 +73,50 @@ def my_faqpost_view(request):
     page_num = request.GET.get("page")
     post_list = paginator.get_page(page_num)
     return render(request, "board/my_faqpost.html", {"post_list": post_list})
+
+
+@method_decorator(login_required, name="dispatch")
+class UpdatePostView(UpdateView):
+
+    model = models.FAQPost
+    template_name = "board/faqpost_update.html"
+    fields = (
+        "title",
+        "body",
+        "photo",
+    )
+    success_message = "게시물이 수정되었습니다"
+    # 폼 입력방식 커스텀
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class=form_class)
+        form.fields["title"].widget.attrs = {
+            "placeholder": "제목",
+            "class": "form-control",
+            "id": "titleInput",
+        }
+        form.fields["body"].widget.attrs = {
+            "class": "form-control",
+            "id": "bodyInput",
+            "aria-describedby": "bodyInput",
+            "aria-label": "Body",
+        }
+        form.fields["photo"].widget.attrs = {
+            "class": "form-control",
+            "id": "photoInput",
+        }
+        return form
+
+    def get_success_url(self):
+        return reverse("board:my_faq")
+
+
+class DeletePostView(users_mixins.LoggedInOnlyView, DeleteView):
+
+    model = models.FAQPost
+    context_object_name = "post"
+
+    def get_success_url(self):
+        return reverse_lazy("board:my_faq")
+
+    def get(self, request, *args, **kwargs):
+        return self.post(request, *args, **kwargs)

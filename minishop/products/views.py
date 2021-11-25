@@ -18,6 +18,7 @@ from . import models
 from . import forms
 from users import mixins as users_mixins
 from wishs import models as wishs_models
+from reviews import models as reviews_model
 
 # Create your views here.
 class HomeView(ListView):
@@ -43,10 +44,11 @@ def product_detail_view(request, pk):
             is_wish = False
     else:
         is_wish = False
+    reviews = reviews_model.Review.objects.filter(product=product)
     return render(
         request,
         "products/product_detail.html",
-        {"product": product, "is_wish": is_wish},
+        {"product": product, "is_wish": is_wish, "reviews": reviews},
     )
 
 

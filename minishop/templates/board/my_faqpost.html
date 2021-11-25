@@ -12,8 +12,11 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th style="width:800px" scope="col">제목</th>
-                            <th style="width:200px" class="text-center" scope="col">작성일</th>
+                            <th style="width:500px" scope="col">제목</th>
+                            <th style="width:200px" class="text-center text-nowrap" scope="col">작성일</th>
+                            <th style="width:100px" class="text-center text-nowrap" scope="col">답변여부</th>
+                            <th style="width:100px" class="text-center text-nowrap" scope="col">수정</th>
+                            <th style="width:100px" class="text-center text-nowrap" scope="col">삭제</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -23,6 +26,34 @@
                                     href="{% url 'board:detail' pk=post.pk %}">{{post.title}}</a></td>
                             <td class="text-center">
                                 {{post.created_at.year}}.{{post.created_at.month}}.{{post.created_at.day}}</td>
+                            <td class="text-center">
+                                {% if post.has_comments %}
+                                완료
+                                {% else %}
+                                미완료
+                                {% endif %}
+                            </td>
+                            <td class="text-center text-nowrap">
+                                {% if post.has_comments %}
+                                <button class="btn btn-outline-dark flex-shrink-0" disabled>
+                                    불가</button>
+                                {% else %}
+                                <a href="{% url 'board:update' pk=post.pk %}"
+                                    class="btn btn-outline-dark flex-shrink-0">
+                                    수정</a>
+                                {% endif %}
+
+                            </td>
+                            <td class="text-center text-nowrap">
+                                {% if post.has_comments %}
+                                <button class="btn btn-outline-danger flex-shrink-0" disabled>
+                                    불가</button>
+                                {% else %}
+                                <a href="#" class="btn btn-outline-danger flex-shrink-0">
+                                    삭제</a>
+                                {% endif %}
+
+                            </td>
                         </tr>
                         {% endfor %}
                     </tbody>

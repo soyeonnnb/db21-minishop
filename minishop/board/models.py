@@ -1,6 +1,13 @@
+import os
 from django.db import models
 
 # Create your models here.
+
+
+def faq_directory_path(instance, filename):
+    return "faq_photo/post_{}/{}".format(instance.id, filename)
+
+
 class FAQPost(models.Model):
 
     """FAQ Post Model Definition"""
@@ -10,7 +17,7 @@ class FAQPost(models.Model):
     body = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    photo = models.ImageField(blank=True, null=True, upload_to="faq_photo")
+    photo = models.ImageField(blank=True, null=True, upload_to=faq_directory_path)
 
     def __str__(self):
         return self.title
@@ -18,6 +25,14 @@ class FAQPost(models.Model):
     def has_comments(self):
         all_comments = self.comments.all()
         return len(all_comments) > 0
+
+    def save(self, *args, **kwargs):
+        if self.id is None:
+            temp_image = self.photo
+            self.photo = None
+            super().save(*args, **kwargs)
+            self.photo = temp_image
+            super().save(*args, **kwargs)
 
 
 class FAQComment(models.Model):
