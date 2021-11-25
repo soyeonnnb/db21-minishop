@@ -42,9 +42,17 @@
                             <td>
                                 <!-- 작성불가/리뷰작성/작성완료-->
                                 <div class="text-center">
+                                    {% if order.delivery == False %}
+                                    <button class="btn btn-outline-dark flex-shrink-0 " disabled>
+                                        작성불가</button>
+                                    {% elif order.has_reviews %}
+                                    <button class="btn btn-outline-dark flex-shrink-0 " disabled>
+                                        작성완료</button>
+                                    {% else %}
                                     <a href="{% url 'reviews:create' order_pk=order.pk %}"
                                         class="btn btn-outline-dark flex-shrink-0 ">
                                         리뷰작성</a>
+                                    {% endif %}
                                 </div>
                             </td>
                         </tr>

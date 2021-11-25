@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.validators import MinValueValidator
+from django.db.models.fields import related
 
 # Create your models here.
 class Order(models.Model):
@@ -16,10 +17,10 @@ class Order(models.Model):
     )
 
     user = models.ForeignKey(
-        "users.User", on_delete=models.CASCADE
+        "users.User", on_delete=models.CASCADE, related_name="orders"
     )  # 주문자 애트리뷰트 foreign key 가 사라지면 해당 객체도 삭제
     product = models.ForeignKey(
-        "products.Product", on_delete=models.CASCADE
+        "products.Product", on_delete=models.CASCADE, related_name="orders"
     )  # 상품 애트리뷰트 foreign key 가 사라지면 해당 객체도 삭제
     number = models.IntegerField(
         default=1, validators=[MinValueValidator(1)]
@@ -33,3 +34,10 @@ class Order(models.Model):
 
     def __str__(self):
         return f"{self.user} - {self.product}"
+
+    def get_reviews(self):
+        return self.reviews.all()
+
+    def has_reviews(self):
+        all_reviews = self.reviews.all()
+        return len(all_reviews) > 0

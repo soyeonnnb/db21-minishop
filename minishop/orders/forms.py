@@ -18,6 +18,7 @@ class CreateOrderForm(forms.ModelForm):
             "class": "form-control",
             "id": "numberInput",
             "type": "number",
+            "min": 1,
         }
 
         self.fields["method"].widget.attrs = {
@@ -47,6 +48,7 @@ class UpdateOrderForm(forms.ModelForm):
             "class": "form-control",
             "id": "numberInput",
             "type": "number",
+            "min": 1,
         }
 
         self.fields["method"].widget.attrs = {

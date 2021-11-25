@@ -27,11 +27,13 @@ class CreateProductForm(forms.ModelForm):
         self.fields["price"].widget.attrs = {
             "class": "form-select",
             "id": "priceInput",
+            "min": 0,
         }
 
         self.fields["inventory"].widget.attrs = {
             "class": "form-control",
             "id": "inventoryInput",
+            "min": 0,
         }
         self.fields["description"].widget.attrs = {
             "class": "form-control",

@@ -95,12 +95,14 @@ class UpdateProductView(users_mixins.LoggedInOnlyView, UpdateView):
             "id": "priceInput",
             "aria-describedby": "priceInput",
             "aria-label": "Price",
+            "min": 0,
         }
         form.fields["inventory"].widget.attrs = {
             "class": "form-control",
             "id": "inventoryInput",
             "aria-describedby": "inventoryInput",
             "aria-label": "Inventory",
+            "min": 0,
         }
         form.fields["description"].widget.attrs = {
             "class": "form-control",

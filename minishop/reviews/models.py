@@ -1,5 +1,4 @@
 from django.db import models
-from django.db.models.deletion import SET_NULL
 from django.core.validators import MinValueValidator, MaxValueValidator
 
 
@@ -12,7 +11,10 @@ class Review(models.Model):
         "users.User", on_delete=models.CASCADE, related_name="reviews"
     )
     order = models.ForeignKey(
-        "orders.Order", on_delete=SET_NULL, related_name="reviews", null=True
+        "orders.Order", on_delete=models.SET_NULL, related_name="reviews", null=True
+    )
+    product = models.ForeignKey(
+        "products.Product", on_delete=models.SET_NULL, related_name="reviews", null=True
     )
     review = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
