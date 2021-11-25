@@ -1,6 +1,7 @@
 from django.db import models
 from django.urls import reverse
 from django.shortcuts import redirect
+from django.core.validators import MinValueValidator
 
 
 class ProductCategory(models.Model):
@@ -22,8 +23,10 @@ class Product(models.Model):
     """Product Model Definition"""
 
     name = models.CharField(max_length=100)  # 이름 애트리뷰트
-    price = models.PositiveIntegerField()  # 가격 애트리뷰트
-    inventory = models.PositiveIntegerField()  # 재고 애트리뷰트
+    price = models.IntegerField(validators=[MinValueValidator(1)])  # 가격 애트리뷰트
+    inventory = models.PositiveIntegerField(
+        validators=[MinValueValidator(0)]
+    )  # 재고 애트리뷰트
     description = models.TextField()  # 설명 애트리뷰트
     categories = models.ForeignKey(
         "ProductCategory",
