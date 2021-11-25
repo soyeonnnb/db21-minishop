@@ -46,13 +46,15 @@ class User(AbstractBaseUser, PermissionsMixin):
     GENDER_FEMALE = "female"
     GENDER_CHOICES = ((GENDER_MALE, "Male"), (GENDER_FEMALE, "Female"))
 
-    email = models.EmailField(unique=True, blank=False)  # Email 애트리뷰트, 중복데이터 비허용
+    email = models.EmailField(
+        unique=True, blank=False, null=False
+    )  # Email 애트리뷰트, 중복데이터 비허용
     password = models.CharField(max_length=45)  # Password 애트리뷰트
-    nickname = models.CharField(max_length=30, blank=True)  # 이름 애트리뷰트
+    nickname = models.CharField(max_length=30, blank=True, null=True)  # 이름 애트리뷰트
     gender = models.CharField(
         max_length=6, choices=GENDER_CHOICES, default=GENDER_MALE
     )  # 성별 애트리뷰트
-    birth = models.DateField(blank=True)  # 생일 애트리뷰트
+    birth = models.DateField(blank=True, null=True)  # 생일 애트리뷰트
     mobile = models.IntegerField(blank=True, null=True)  # 핸드폰번호 애트리뷰트
     is_staff = models.BooleanField(default=False)  # 스태프권한 애트리뷰트
     is_active = models.BooleanField(default=True)

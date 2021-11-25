@@ -44,6 +44,7 @@ PROJECT_APPS = [
     "wishs.apps.WishsConfig",
     "orders.apps.OrdersConfig",
     "board.apps.BoardConfig",
+    "reviews.apps.ReviewsConfig",
 ]
 
 INSTALLED_APPS = DJANGO_APPS + PROJECT_APPS

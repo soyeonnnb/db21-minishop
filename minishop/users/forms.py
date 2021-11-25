@@ -90,3 +90,46 @@ class SignUpForm(forms.ModelForm):
         password = self.cleaned_data.get("password")
         user.set_password(password)
         user.save()
+
+    def __init__(self, *args, **kwargs):
+        super(SignUpForm, self).__init__(*args, **kwargs)
+
+        self.fields["email"].widget.attrs = {
+            "type": "email",
+            "class": "form-control",
+            "id": "emailInput",
+            "value": "",
+            "placeholder": "name@example.com",
+        }
+
+        self.fields["password"].widget.attrs = {
+            "type": "password",
+            "class": "form-control",
+            "id": "floatingPassword",
+            "placeholder": "qwerty1234",
+        }
+        self.fields["password1"].widget.attrs = {
+            "type": "password",
+            "class": "form-control",
+            "id": "floatingPassword1",
+            "placeholder": "qwerty1234",
+        }
+        self.fields["nickname"].widget.attrs = {
+            "class": "form-control",
+            "id": "nicknameInput",
+            "placeholder": "DBJOIN",
+        }
+        self.fields["gender"].widget.attrs = {
+            "class": "form-select",
+            "id": "genderInput",
+        }
+        self.fields["birth"].widget.attrs = {
+            "class": "form-control",
+            "id": "birthInput",
+            "placeholder": "2000-01-01",
+        }
+        self.fields["mobile"].widget.attrs = {
+            "class": "form-control",
+            "id": "mobileInput",
+            "placeholder": "01234567890",
+        }

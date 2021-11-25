@@ -10,32 +10,41 @@
         </div>
         <div class="d-flex justify-content-between mb-4">
             <div>
-                <table class="table align-middle">
+                <table class="table align-middle text-nowrap">
                     <thead>
                         <tr>
-                            <th style="width:300px" scope="col">제품</th>
+                            <th style="width:50px" class="text-center" scope="col">주문번호</th>
+                            <th style="width:300px" class="text-center" scope="col">제품</th>
                             <th style="width:100px" class="text-center" scope="col">수량</th>
-                            <th style="width:100px" class="text-center" scope="col">배송</th>
                             <th style="width:200px" class="text-center" scope="col">주문일</th>
-                            <th style="width:200px" class="text-center" scope="col">상세보기</th>
+                            <th style="width:100px" class="text-center" scope="col">배송</th>
+                            <th style="width:200px" class="text-center" scope="col">리뷰</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for order in order_list %}
                         <tr>
-                            <td><a class="text-decoration-none text-black"
-                                    href="{% url 'products:detail' pk=order.product.pk %}">{{order.product}}</a></td>
+                            <td class="text-center">
+                                <a href="{% url 'orders:detail' pk=order.pk %}"
+                                    class="text-decoration-none text-black">{{order.pk}}</a>
+                            </td>
+                            <td class="text-center">
+                                <a class="text-decoration-none text-black"
+                                    href="{% url 'products:detail' pk=order.product.pk %}">{{order.product}}</a>
+                            </td>
                             <td class="text-center">
                                 {{order.number}}</td>
-                            <td class="text-center">
-                                {{order.delivery}}</td>
+
                             <td class="text-center">
                                 {{order.date_ordered.year}}.{{order.date_ordered.month}}.{{order.date_ordered.day}}</td>
+                            <td class="text-center">
+                                {{order.delivery}}</td>
                             <td>
+                                <!-- 작성불가/리뷰작성/작성완료-->
                                 <div class="text-center">
-                                    <a href="{% url 'orders:detail' pk=order.pk %}"
+                                    <a href="{% url 'reviews:create' order_pk=order.pk %}"
                                         class="btn btn-outline-dark flex-shrink-0 ">
-                                        상세보기</a>
+                                        리뷰작성</a>
                                 </div>
                             </td>
                         </tr>
@@ -44,7 +53,6 @@
                 </table>
             </div>
         </div>
-
 
 
 

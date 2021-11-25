@@ -17,7 +17,11 @@
                         </tr>
                         <tr>
                             <th class="table-secondary">닉네임</th>
-                            <td>{{user_info.nickname}}</td>
+                            <td>{% if user_info.nickname %}
+                                {{user_info.nickname}}
+                                {% else %}
+                                없음
+                                {% endif %}</td>
                         </tr>
                         <tr>
                             <th class="table-secondary">성별</th>
