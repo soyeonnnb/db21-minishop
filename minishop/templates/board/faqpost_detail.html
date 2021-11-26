@@ -4,6 +4,13 @@
 <div class="d-flex container mt-5">
     {% include 'board/partials/navbar.html' %}
     <div class="container-fluid d-flex flex-column justify-content-between align-center" style=" width:1000px;">
+        {% if messages %}
+        {% for message in messages %}
+        <div>
+            {{ message|safe }}
+        </div>
+        {% endfor %}
+        {% endif %}
         <div class="mb-2">
             <h3>{{post.title}}</h3>
         </div>

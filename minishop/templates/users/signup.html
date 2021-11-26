@@ -3,6 +3,13 @@
 {% block page_title %}회원가입{% endblock page_title %}
 {% block content %}
 <div class="text-center mt-5 w-50 mx-auto">
+    {% if messages %}
+    {% for message in messages %}
+    <div>
+        {{ message|safe }}
+    </div>
+    {% endfor %}
+    {% endif %}
     <main class="form-signin border mt-5 p-5">
         <form action="" method="POST">
             {% csrf_token %}

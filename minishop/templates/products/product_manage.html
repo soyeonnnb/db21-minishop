@@ -8,6 +8,13 @@
             <div>
                 <h3>상품 관리</h3>
             </div>
+            {% if messages %}
+            {% for message in messages %}
+            <div>
+                {{ message|safe }}
+            </div>
+            {% endfor %}
+            {% endif %}
             <div>
                 <a href="{% url 'products:create' %}" class="btn btn-outline-dark flex-shrink-0">
                     상품추가

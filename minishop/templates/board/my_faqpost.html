@@ -7,6 +7,13 @@
         <div class="mb-4">
             <h3>내가 쓴 FAQ</h3>
         </div>
+        {% if messages %}
+        {% for message in messages %}
+        <div>
+            {{ message|safe }}
+        </div>
+        {% endfor %}
+        {% endif %}
         <div class="d-flex justify-content-between mb-4">
             <div>
                 <table class="table">

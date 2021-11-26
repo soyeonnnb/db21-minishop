@@ -8,6 +8,13 @@
         <div class="mb-4">
             <h3>리뷰 작성</h3>
         </div>
+        {% if messages %}
+        {% for message in messages %}
+        <div>
+            {{ message|safe }}
+        </div>
+        {% endfor %}
+        {% endif %}
         <div class="d-flex justify-content-between mb-4">
             <div>
                 <table class="table text-nowrap align-middle text-center w-100">

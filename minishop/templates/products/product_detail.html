@@ -5,6 +5,13 @@
 <section class="py-5">
     <div class="container px-4 px-lg-5 my-5">
         <div class="row gx-4 gx-lg-5 align-items-center">
+            {% if messages %}
+            {% for message in messages %}
+            <div>
+                {{ message|safe }}
+            </div>
+            {% endfor %}
+            {% endif %}
             <span class="mb-3">{{product.categories}} / {{product.name}}</span>
             <!-- Product image-->
             <div class="col-md-6">
