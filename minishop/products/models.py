@@ -1,9 +1,8 @@
 from django.db import models
 from django.urls import reverse
-from django.shortcuts import redirect
 from django.core.validators import MinValueValidator
 
-
+# 상품 카테고리 테이블
 class ProductCategory(models.Model):
 
     """Product Category Model Definition"""
@@ -17,11 +16,12 @@ class ProductCategory(models.Model):
         verbose_name_plural = "Product Categories"
 
 
+# 상품 사진 이름 커스텀을 위한 함수
 def product_directory_path(instance, filename):
-    return "faq_product/product_{}/{}".format(instance.id, filename)
+    return "product/product_{}/{}".format(instance.id, filename)
 
 
-# Create your models here.
+# Product 테이블
 class Product(models.Model):
 
     """Product Model Definition"""
@@ -30,7 +30,7 @@ class Product(models.Model):
     price = models.IntegerField(validators=[MinValueValidator(1)])  # 가격 애트리뷰트
     inventory = models.PositiveIntegerField(
         validators=[MinValueValidator(0)]
-    )  # 재고 애트리뷰트
+    )  # 재고 애트리뷰트, 최소 0의 값을 가짐
     description = models.TextField()  # 설명 애트리뷰트
     categories = models.ForeignKey(
         "ProductCategory",
@@ -38,7 +38,7 @@ class Product(models.Model):
         blank=True,
         null=True,
         on_delete=models.SET_NULL,
-    )  # 카테고리 애트리뷰트
+    )  # 카테고리 애트리뷰트, 앞서 만든 category 테이블의 값을 fk로 가짐
     photo = models.ImageField(
         blank=True, null=True, upload_to=product_directory_path
     )  # 사진 애트리뷰트
@@ -51,11 +51,14 @@ class Product(models.Model):
     def get_absolute_url(self):
         return reverse("products:detail", kwargs={"pk": self.pk})
 
+    # 해당 product의 별점을 구함
     def total_rating(self):
-        all_reviews = self.reviews.all()
+        all_reviews = self.reviews.all()  # 해당 테이블을 fk로 가지는 reviews 테이블의 인스턴스를 가져옴
         all_ratings = 0
         if len(all_reviews) > 0:
             for review in all_reviews:
-                all_ratings += review.rating
+                all_ratings += (
+                    review.rating
+                )  # review테이블의 rating 애트리뷰트의 값 만큼 all_rating에 더해줌
             return round(all_ratings / len(all_reviews), 2)
         return 0

@@ -1,32 +1,35 @@
-from django.utils import timezone
-from django.utils.decorators import method_decorator
-from django.shortcuts import get_object_or_404, render, redirect
-from django.urls import reverse, reverse_lazy
-from django.views.generic import ListView, UpdateView, DeleteView
+from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
+from django.shortcuts import get_object_or_404, render, redirect
+from django.urls import reverse, reverse_lazy
+from django.utils import timezone
+from django.utils.decorators import method_decorator
+from django.views.generic import ListView, UpdateView, DeleteView
 
 from . import models
 from . import forms
 from users import mixins as users_mixins
 
-# Create your views here.
+# FAQ List를 보여주는 클래스
 class FAQListView(ListView):
 
     """FAQListView Definition"""
 
     model = models.FAQPost
-    paginate_by = 15
+    paginate_by = 15  # 한 페이지에 15개씩 보여줌
     paginate_orphans = 4
-    ordering = "-created_at"
+    ordering = "-created_at"  # 최근에 생성된 글 순으로 정렬
     context_object_name = "posts"
 
 
+# FAQ POST 내용을 보여주는 함수
 def faq_post_detail(request, pk):
     post = models.FAQPost.objects.get(pk=pk)
     comments = models.FAQComment.objects.filter(post=post)
-    comment_form = forms.CreateFAQCommentForm()
-
+    comment_form = (
+        forms.CreateFAQCommentForm()
+    )  # 해당 페이지에서 comment form 도 있어야 하기 때문에 함께 가져옴
     return render(
         request,
         "board/faqpost_detail.html",
@@ -34,25 +37,30 @@ def faq_post_detail(request, pk):
     )
 
 
+# FAQ Detail Page에서 comment를 입력하였을 때 DB에 저장해주는 함수
+@staff_member_required  # 유저 모델에서 is_staff가 true 인 유저만 작성 가능
 def faqcomment_create(request, pk):
-    filled_form = forms.CreateFAQCommentForm(request.POST)
+    filled_form = forms.CreateFAQCommentForm(request.POST)  # request가 POST형식이라면
     if filled_form.is_valid():
         finished_form = filled_form.save(commit=False)
-        finished_form.post = get_object_or_404(models.FAQPost, pk=pk)
-        finished_form.user = request.user
-        finished_form.created_at = timezone.now()
-        finished_form.updated_at = timezone.now()
-        finished_form.save()
+        finished_form.post = get_object_or_404(models.FAQPost, pk=pk)  # POST를 가져옴
+        finished_form.user = request.user  # 답변을 적은 사람을 요청을 보낸 사람으로 함
+        finished_form.created_at = timezone.now()  # 날짜 저장
+        finished_form.updated_at = timezone.now()  # 날짜 저장
+        finished_form.save()  # DB에 저장함
     return redirect("board:detail", pk)
 
 
+# 게시물 작성 함수
 @login_required
 def faq_post_create(request):
-    if request.method == "POST" or request.method == "FILES":
-        form = forms.CreateFAQPostForm(request.POST, request.FILES)
+    if (
+        request.method == "POST" or request.method == "FILES"
+    ):  # 요청이 POST형식이라면, 해당 모델에는 사진도 있기 때문에 파일도 함께 가져옴
+        form = forms.CreateFAQPostForm(request.POST, request.FILES)  #
         if form.is_valid():
             finished_form = form.save(commit=False)
-            finished_form.user = request.user
+            finished_form.user = request.user  # user 애트리뷰트는 요청을 보낸 user의 pk를 넣음
             finished_form.save()
             request.FILES["imagename"].name
             return redirect(
@@ -62,30 +70,34 @@ def faq_post_create(request):
 
     else:
         form = forms.CreateFAQPostForm()
-
     return render(request, "board/faqpost_create.html", {"form": form})
 
 
+# 내가 작성한 post를 가져오는 함수
+@login_required
 def my_faqpost_view(request):
-    user = request.user
-    post_list = models.FAQPost.objects.filter(user=user).order_by("-created_at")
+    user = request.user  # user는 요청을 보낸 유저임
+    post_list = models.FAQPost.objects.filter(user=user).order_by(
+        "-created_at"
+    )  # FAQPost 모델에서 user가 요청을 보낸 유저인 post만 가져옴. 생성날짜가 빠른 순으로 정렬
     paginator = Paginator(post_list, 15)
     page_num = request.GET.get("page")
     post_list = paginator.get_page(page_num)
     return render(request, "board/my_faqpost.html", {"post_list": post_list})
 
 
-@method_decorator(login_required, name="dispatch")
-class UpdatePostView(UpdateView):
+# 게시물을 수정하는 클래스
+class UpdatePostView(users_mixins.LoggedInOnlyView, UpdateView):
 
     model = models.FAQPost
     template_name = "board/faqpost_update.html"
-    fields = (
+    fields = (  # 폼 입력 양식
         "title",
         "body",
         "photo",
     )
     success_message = "게시물이 수정되었습니다"
+
     # 폼 입력방식 커스텀
     def get_form(self, form_class=None):
         form = super().get_form(form_class=form_class)
@@ -106,10 +118,12 @@ class UpdatePostView(UpdateView):
         }
         return form
 
+    # 해당 메소드가 성공하면 다음으로 갈 url
     def get_success_url(self):
         return reverse("board:my_faq")
 
 
+# 게시물을 삭제해주는 class
 class DeletePostView(users_mixins.LoggedInOnlyView, DeleteView):
 
     model = models.FAQPost

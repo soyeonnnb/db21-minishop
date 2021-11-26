@@ -1,17 +1,14 @@
+from django.contrib.auth.models import AnonymousUser
+from django.contrib.admin.views.decorators import staff_member_required
 from django.shortcuts import render
+from django.urls import reverse_lazy, reverse
+from django.utils.decorators import method_decorator
 from django.views.generic import (
     ListView,
-    DetailView,
     CreateView,
     UpdateView,
     DeleteView,
 )
-from django.contrib.auth.models import AnonymousUser
-from django.contrib.admin.views.decorators import staff_member_required
-from django.utils.decorators import method_decorator
-from django.urls import reverse_lazy, reverse
-from django.shortcuts import redirect
-from django.core.paginator import Paginator
 
 
 from . import models
@@ -20,12 +17,12 @@ from users import mixins as users_mixins
 from wishs import models as wishs_models
 from reviews import models as reviews_model
 
-# Create your views here.
+# 홈 페이지.
 class HomeView(ListView):
 
     """HomeView Definition"""
 
-    model = models.Product
+    model = models.Product  # 해당 테이블의 값을 가져옴
     paginate_by = 12
     paginate_orphans = 4
     ordering = "-created_at"
@@ -36,15 +33,19 @@ class HomeView(ListView):
 def product_detail_view(request, pk):
     user = request.user
     product = models.Product.objects.get(pk=pk)
-    if user != AnonymousUser():
+    if user != AnonymousUser():  # 만약 비로그인 회원이 아니라면
         try:
-            wishs_models.Wish.objects.get(user=user, product=product)
-            is_wish = True
-        except wishs_models.Wish.DoesNotExist:
-            is_wish = False
-    else:
-        is_wish = False
-    reviews = reviews_model.Review.objects.filter(product=product)
+            wishs_models.Wish.objects.get(
+                user=user, product=product
+            )  # wish 테이블에서 user=user, product=product인 인스턴스를 가져옴
+            is_wish = True  # 가져오면 찜하기는 true
+        except wishs_models.Wish.DoesNotExist:  # 만약 위의 그러한 인스턴스가 없다면
+            is_wish = False  # 찜하기는 false
+    else:  # 비로그인 회원이라면
+        is_wish = False  # 찜하기는 false
+    reviews = reviews_model.Review.objects.filter(
+        product=product
+    )  # reviews 테이블에서 product=product 인 인스턴스를 가져옴
     return render(
         request,
         "products/product_detail.html",
@@ -52,6 +53,7 @@ def product_detail_view(request, pk):
     )
 
 
+# 상품 생성 클래스. staff 유저만 접근 가능
 @method_decorator(staff_member_required, name="dispatch")
 class CreateProductView(CreateView):
 
@@ -66,10 +68,11 @@ class CreateProductView(CreateView):
         return reverse("products:detail", kwargs={"pk": self.object.pk})
 
 
+# 상품 수정 클래스. 위와 동일하게 staff 멤버만 접근 가능
 @method_decorator(staff_member_required, name="dispatch")
 class UpdateProductView(users_mixins.LoggedInOnlyView, UpdateView):
 
-    model = models.Product
+    model = models.Product  # 해당 테이블의 인스턴스 수정
     template_name = "products/product_update.html"
     fields = (
         "name",
@@ -81,6 +84,7 @@ class UpdateProductView(users_mixins.LoggedInOnlyView, UpdateView):
         "discountinue",
     )
     success_message = "상품이 수정되었습니다"
+
     # 폼 입력방식 커스텀
     def get_form(self, form_class=None):
         form = super().get_form(form_class=form_class)
@@ -136,10 +140,11 @@ class UpdateProductView(users_mixins.LoggedInOnlyView, UpdateView):
         return reverse("products:manage")
 
 
+# 상품 삭제 클래스. 위와 동일
 @method_decorator(staff_member_required, name="dispatch")
 class DeleteProductView(users_mixins.LoggedInOnlyView, DeleteView):
 
-    model = models.Product
+    model = models.Product  # 해당 테이블의 인스턴스 삭제
     context_object_name = "product"
 
     def get_success_url(self):
@@ -149,12 +154,13 @@ class DeleteProductView(users_mixins.LoggedInOnlyView, DeleteView):
         return self.post(request, *args, **kwargs)
 
 
+# 상품 관리 클래스
 @method_decorator(staff_member_required, name="dispatch")
 class ProductManageView(ListView):
 
-    model = models.Product
+    model = models.Product  # 해당 테이블의 인스턴스 관리
     paginate_by = 15
     paginate_orphans = 4
-    ordering = "-created_at"
+    ordering = "-created_at"  # 최근 생성된 상품 순으로 정렬
     context_object_name = "product_list"
     template_name = "products/product_manage.html"

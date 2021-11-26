@@ -1,7 +1,8 @@
 from django.contrib import admin
 from . import models
 
-# Register your models here.
+
+# User Admin 커스텀
 @admin.register(models.User)
 class UserAdmin(admin.ModelAdmin):  # Admin 페이지에 User 테이블 추가
 

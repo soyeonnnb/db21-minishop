@@ -1,7 +1,7 @@
 from django.contrib import admin
 from . import models
 
-# Register your models here.
+# Board Admin 페이지 커스텀하는 코드 - 다른 파일들도 동일
 @admin.register(models.FAQPost)
 class FAQPostAdmin(admin.ModelAdmin):
 

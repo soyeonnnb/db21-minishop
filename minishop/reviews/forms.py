@@ -2,10 +2,10 @@ from django import forms
 
 from . import models
 
-
+# 리뷰 생성 폼
 class CreateReviewForm(forms.ModelForm):
     class Meta:
-        model = models.Review
+        model = models.Review  # 해당 테이블의 인스턴스 생성
         fields = ("review", "rating")
 
     def __init__(self, *args, **kwargs):

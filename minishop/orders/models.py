@@ -2,11 +2,12 @@ from django.db import models
 from django.core.validators import MinValueValidator
 from django.db.models.fields import related
 
-# Create your models here.
+# Order 테이블
 class Order(models.Model):
 
     """Order Model Definition"""
 
+    # method는 select 할 수 있어, 이 셋 중 하나의 값을 가짐
     METHOD_CASH = "cash"
     METHOD_CARD = "card"
     METHOD_PAY = "pay"
@@ -35,9 +36,11 @@ class Order(models.Model):
     def __str__(self):
         return f"{self.user} - {self.product}"
 
+    # 해당 테이블을 fk로 하는 reviews를 가져오는 함수
     def get_reviews(self):
         return self.reviews.all()
 
+    # 해당 테이블을 fk로 하는 reviews가 있는지 확인해주는 함수
     def has_reviews(self):
         all_reviews = self.reviews.all()
         return len(all_reviews) > 0

@@ -2,11 +2,11 @@ from django import forms
 
 from . import models
 
-
+# 상품을 생성해주는 폼
 class CreateProductForm(forms.ModelForm):
     class Meta:
-        model = models.Product
-        fields = (
+        model = models.Product  # 해당 테이블의 인스턴스 생성
+        fields = (  # 사용자가 입력할 폼
             "name",
             "price",
             "inventory",
@@ -15,6 +15,7 @@ class CreateProductForm(forms.ModelForm):
             "photo",
         )
 
+    # 폼 커스텀
     def __init__(self, *args, **kwargs):
         super(CreateProductForm, self).__init__(*args, **kwargs)
 

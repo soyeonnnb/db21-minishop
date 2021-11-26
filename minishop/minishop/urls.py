@@ -3,6 +3,7 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
+# 해당 프로젝트의 url 모음
 urlpatterns = [
     path("", include("core.urls", namespace="core")),
     path("wishs/", include("wishs.urls", namespace="wishs")),

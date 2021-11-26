@@ -2,6 +2,7 @@ from django import forms
 from . import models
 
 
+#  FAQ POST 를 생성하는 폼 클래스
 class CreateFAQPostForm(forms.ModelForm):
     class Meta:
         model = models.FAQPost
@@ -26,6 +27,7 @@ class CreateFAQPostForm(forms.ModelForm):
         }
 
 
+#  FAQ 답변을 생성하는 폼 클래스
 class CreateFAQCommentForm(forms.ModelForm):
     class Meta:
         model = models.FAQComment

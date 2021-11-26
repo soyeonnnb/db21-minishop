@@ -1,16 +1,17 @@
 from django import forms
 from . import models
 
-
+# 주문을 생성해주는 폼
 class CreateOrderForm(forms.ModelForm):
     class Meta:
-        model = models.Order
-        fields = [
+        model = models.Order  # 해당 테이블의 인스턴스 생성
+        fields = [  # 사용자가 입력할 애트리뷰트
             "number",
             "method",
             "address",
         ]
 
+    # 폼 커스텀
     def __init__(self, *args, **kwargs):
         super(CreateOrderForm, self).__init__(*args, **kwargs)
 
@@ -32,15 +33,17 @@ class CreateOrderForm(forms.ModelForm):
         }
 
 
+# 주문을 수정해주는 폼
 class UpdateOrderForm(forms.ModelForm):
     class Meta:
-        model = models.Order
-        fields = [
+        model = models.Order  # 해당 테이블의 인스턴스가 수정됨
+        fields = [  # 수정할 애트리뷰트
             "number",
             "method",
             "address",
         ]
 
+    # 폼 커스텀
     def __init__(self, *args, **kwargs):
         super(UpdateOrderForm, self).__init__(*args, **kwargs)
 
