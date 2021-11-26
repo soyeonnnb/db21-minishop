@@ -15,3 +15,8 @@ class Wish(models.Model):
 
     def __str__(self):
         return f"{self.user} - {self.product}"
+
+    # AWS RDS 사용
+    class Meta:
+        managed = False
+        db_table = "wish"  # MySql에서 사용하는 테이블 이름

@@ -44,3 +44,8 @@ class Order(models.Model):
     def has_reviews(self):
         all_reviews = self.reviews.all()
         return len(all_reviews) > 0
+
+    # AWS RDS 사용
+    class Meta:
+        managed = False
+        db_table = "order"  # MySql에서 사용하는 테이블 이름

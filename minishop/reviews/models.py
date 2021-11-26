@@ -23,3 +23,8 @@ class Review(models.Model):
     rating = models.IntegerField(
         validators=[MinValueValidator(1), MaxValueValidator(5)]
     )  # 리뷰 rating 애트리뷰트, 최소 1, 최대 5의 정수값을 가짐
+
+    # AWS RDS 사용
+    class Meta:
+        managed = False
+        db_table = "review"  # MySql에서 사용하는 테이블 이름

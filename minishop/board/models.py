@@ -40,6 +40,11 @@ class FAQPost(models.Model):
             self.photo = temp_image
             super().save(*args, **kwargs)
 
+    # AWS RDS 사용
+    class Meta:
+        managed = False
+        db_table = "post"  # MySql에서 사용하는 테이블 이름
+
 
 # FAQ 답변 테이블
 class FAQComment(models.Model):
@@ -55,3 +60,8 @@ class FAQComment(models.Model):
     comment = models.TextField()  # 내용 애트리뷰트
     created_at = models.DateTimeField(auto_now_add=True)  # 생성 날짜 애트리뷰트, 생성 시 자동 입력
     updated_at = models.DateTimeField(auto_now=True)  # 수정 날짜 애트리뷰트, 수정 시 자동 입력
+
+    # AWS RDS 사용
+    class Meta:
+        managed = False
+        db_table = "comment"  # MySql에서 사용하는 테이블 이름

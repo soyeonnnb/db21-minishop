@@ -15,6 +15,10 @@ class ProductCategory(models.Model):
     class Meta:
         verbose_name_plural = "Product Categories"
 
+        # AWS RDS 사용
+        managed = False
+        db_table = "product_category"  # MySql에서 사용하는 테이블 이름
+
 
 # 상품 사진 이름 커스텀을 위한 함수
 def product_directory_path(instance, filename):
@@ -43,7 +47,7 @@ class Product(models.Model):
         blank=True, null=True, upload_to=product_directory_path
     )  # 사진 애트리뷰트
     created_at = models.DateTimeField(auto_now_add=True)  # 상품 생성 날짜 애트리뷰트
-    discountinue = models.BooleanField(default=False)  # 단종여부 애트리뷰트
+    discontinue = models.BooleanField(default=False)  # 단종여부 애트리뷰트
 
     def __str__(self):
         return self.name
@@ -62,3 +66,8 @@ class Product(models.Model):
                 )  # review테이블의 rating 애트리뷰트의 값 만큼 all_rating에 더해줌
             return round(all_ratings / len(all_reviews), 2)
         return 0
+
+    # AWS RDS 사용
+    class Meta:
+        managed = False
+        db_table = "product"  # MySql에서 사용하는 테이블 이름

@@ -52,7 +52,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         unique=True, blank=False, null=False
     )  # Email 애트리뷰트, 중복데이터 비허용
     password = models.CharField(max_length=45)  # Password 애트리뷰트
-    nickname = models.CharField(max_length=30, blank=True, null=True)  # 이름 애트리뷰트
+    nickname = models.CharField(max_length=30, blank=False)  # 이름 애트리뷰트
     gender = models.CharField(
         max_length=6, choices=GENDER_CHOICES, default=GENDER_MALE
     )  # 성별 애트리뷰트
@@ -60,9 +60,15 @@ class User(AbstractBaseUser, PermissionsMixin):
     mobile = models.IntegerField(blank=True, null=True)  # 핸드폰번호 애트리뷰트
     is_staff = models.BooleanField(default=False)  # 스태프권한 애트리뷰트
     is_active = models.BooleanField(default=True)  # is_active 는 필수로 True 해야 로그인 가능
+    is_superuser = models.BooleanField(default=False)
     date_joined = models.DateTimeField(blank=True, auto_now_add=True)  # 가입날짜 애트리뷰트
     last_login = models.DateTimeField(auto_now=True)  # 최근 로그인날짜/시간 애트리뷰트
     objects = UserManager()  # User table을 위해 필요한 코드
 
     USERNAME_FIELD = "email"  # Email이 식별자
     REQUIRED_FIELDS = ["nickname"]  # 필수입력값
+
+    # AWS RDS 사용
+    class Meta:
+        managed = False
+        db_table = "user"  # MySql에서 사용하는 테이블 이름
