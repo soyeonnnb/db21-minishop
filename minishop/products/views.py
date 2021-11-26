@@ -81,7 +81,7 @@ class UpdateProductView(users_mixins.LoggedInOnlyView, UpdateView):
         "description",
         "categories",
         "photo",
-        "discountinue",
+        "discontinue",
     )
     success_message = "상품이 수정되었습니다"
 
@@ -127,12 +127,12 @@ class UpdateProductView(users_mixins.LoggedInOnlyView, UpdateView):
             "id": "photoInput",
         }
 
-        form.fields["discountinue"].widget.attrs = {
+        form.fields["discontinue"].widget.attrs = {
             "class": "form-check-input",
             "type": "checkbox",
-            "id": "discountinueInput",
-            "aria-describedby": "discountinueInput",
-            "aria-label": "Discountinue",
+            "id": "discontinueInput",
+            "aria-describedby": "discontinueInput",
+            "aria-label": "Discontinue",
         }
         return form
 

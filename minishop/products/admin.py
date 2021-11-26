@@ -27,7 +27,7 @@ class ProductAdmin(admin.ModelAdmin):  # Admin 페이지에 상품 추가
         (
             "Inventory",
             {
-                "fields": ("inventory", "discountinue"),
+                "fields": ("inventory", "discontinue"),
             },
         ),
     )
@@ -36,10 +36,10 @@ class ProductAdmin(admin.ModelAdmin):  # Admin 페이지에 상품 추가
         "name",
         "price",
         "inventory",
-        "discountinue",
+        "discontinue",
         "created_at",
     )
     list_filter = (  # 해당 애트리뷰트들로 filtering 가능
         "categories",
-        "discountinue",
+        "discontinue",
     )
