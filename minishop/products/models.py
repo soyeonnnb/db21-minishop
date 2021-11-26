@@ -17,7 +17,7 @@ class ProductCategory(models.Model):
 
         # AWS RDS 사용
         managed = False
-        db_table = "product_category"  # MySql에서 사용하는 테이블 이름
+        db_table = "category"  # MySql에서 사용하는 테이블 이름
 
 
 # 상품 사진 이름 커스텀을 위한 함수
@@ -36,7 +36,7 @@ class Product(models.Model):
         validators=[MinValueValidator(0)]
     )  # 재고 애트리뷰트, 최소 0의 값을 가짐
     description = models.TextField()  # 설명 애트리뷰트
-    categories = models.ForeignKey(
+    category = models.ForeignKey(
         "ProductCategory",
         related_name="products",
         blank=True,

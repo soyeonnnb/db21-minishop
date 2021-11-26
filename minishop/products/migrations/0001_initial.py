@@ -68,7 +68,7 @@ class Migration(migrations.Migration):
                 ("created_at", models.DateTimeField(auto_now_add=True)),
                 ("discontinue", models.BooleanField(default=False)),
                 (
-                    "categories",
+                    "category",
                     models.ForeignKey(
                         blank=True,
                         null=True,

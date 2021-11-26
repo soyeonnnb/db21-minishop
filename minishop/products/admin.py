@@ -22,7 +22,7 @@ class ProductAdmin(admin.ModelAdmin):  # Admin 페이지에 상품 추가
     fieldsets = (  # 상품 애트리뷰트들 분류
         (
             "Basic Info",
-            {"fields": ("name", "description", "price", "categories", "photo")},
+            {"fields": ("name", "description", "price", "category", "photo")},
         ),
         (
             "Inventory",
@@ -40,6 +40,6 @@ class ProductAdmin(admin.ModelAdmin):  # Admin 페이지에 상품 추가
         "created_at",
     )
     list_filter = (  # 해당 애트리뷰트들로 filtering 가능
-        "categories",
+        "category",
         "discontinue",
     )

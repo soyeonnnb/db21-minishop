@@ -79,7 +79,7 @@ class UpdateProductView(users_mixins.LoggedInOnlyView, UpdateView):
         "price",
         "inventory",
         "description",
-        "categories",
+        "category",
         "photo",
         "discontinue",
     )
@@ -116,11 +116,11 @@ class UpdateProductView(users_mixins.LoggedInOnlyView, UpdateView):
             "aria-describedby": "descriptionInput",
             "aria-label": "Description",
         }
-        form.fields["categories"].widget.attrs = {
+        form.fields["category"].widget.attrs = {
             "class": "form-select",
-            "id": "categoriesInput",
-            "aria-describedby": "categoriesInput",
-            "aria-label": "Categories",
+            "id": "categoryInput",
+            "aria-describedby": "categoryInput",
+            "aria-label": "Category",
         }
         form.fields["photo"].widget.attrs = {
             "class": "form-control",

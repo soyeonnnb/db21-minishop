@@ -11,7 +11,7 @@ class CreateProductForm(forms.ModelForm):
             "price",
             "inventory",
             "description",
-            "categories",
+            "category",
             "photo",
         )
 
@@ -40,9 +40,9 @@ class CreateProductForm(forms.ModelForm):
             "class": "form-control",
             "id": "descriptionInput",
         }
-        self.fields["categories"].widget.attrs = {
+        self.fields["category"].widget.attrs = {
             "class": "form-select",
-            "id": "categoriesInput",
+            "id": "categoryInput",
         }
         self.fields["photo"].widget.attrs = {
             "class": "form-control",
