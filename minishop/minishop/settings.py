@@ -1,6 +1,7 @@
 import os
 from pathlib import Path
 import django_on_heroku
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -10,10 +11,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get("SECRET_KEY")
+SECRET_KEY = config("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = config("DEBUG")
 
 ALLOWED_HOSTS = [
     "*",
@@ -52,8 +53,6 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
 ]
-# Activate Django-Heroku.
-django_on_heroku.settings(locals())
 
 ROOT_URLCONF = "minishop.urls"
 
@@ -82,11 +81,11 @@ WSGI_APPLICATION = "minishop.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",  # mysql 사용
-        "NAME": os.environ.get("DB_NAME"),  # DB 이름 -> 보안상 .env에서 관리. 이 밑의 것들도
-        "USER": os.environ.get("DB_USER"),  # DB 유저
-        "PASSWORD": os.environ.get("DB_PASSWORD"),  # DB 비밀번호
-        "HOST": os.environ.get("DB_HOST"),  # DB HOST
-        "PORT": os.environ.get("DB_PORT"),  # DB PORT 번호
+        "NAME": config("DB_NAME"),  # DB 이름 -> 보안상 .env에서 관리. 이 밑의 것들도
+        "USER": config("DB_USER"),  # DB 유저
+        "PASSWORD": config("DB_PASSWORD"),  # DB 비밀번호
+        "HOST": config("DB_HOST"),  # DB HOST
+        "PORT": config("DB_PORT"),  # DB PORT 번호
         "OPTIONS": {
             "init_command": "SET sql_mode='STRICT_TRANS_TABLES'",
         },
@@ -154,3 +153,6 @@ LOGIN_REDIRECT_URL = "users:login"
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# Activate Django-Heroku.
+django_on_heroku.settings(locals())
