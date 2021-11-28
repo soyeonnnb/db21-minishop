@@ -1,1 +1,1 @@
-web: gunicorn db21-minishop.wsgi --log-file -
+web: gunicorn minishop.wsgi --log-file -
