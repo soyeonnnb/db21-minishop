@@ -1,6 +1,5 @@
 import os
 from pathlib import Path
-import django_on_heroku
 from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -14,7 +13,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = config("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config("DEBUG")
+DEBUG = False
 
 ALLOWED_HOSTS = [
     "*",
@@ -155,4 +154,4 @@ LOGIN_REDIRECT_URL = "users:login"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Activate Django-Heroku.
-django_on_heroku.settings(locals())
+# django_on_heroku.settings(locals())
