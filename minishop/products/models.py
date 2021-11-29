@@ -1,6 +1,4 @@
-import os
-import datetime
-from random import randint
+import random
 from django.db import models
 from django.urls import reverse
 from django.core.validators import MinValueValidator
@@ -25,7 +23,8 @@ class ProductCategory(models.Model):
 
 # 상품 사진 이름 커스텀을 위한 함수
 def product_directory_path(instance, filename):
-    return "product/product_{}/{}".format(instance.id, filename)
+    n = random.randint(1000000000, 9999999999)
+    return "product/product_{}{}/{}".format(instance.id, n, filename)
 
 
 # Product 테이블

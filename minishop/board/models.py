@@ -1,19 +1,11 @@
 from django.db import models
+import random
 
 
 # 사진 저장이름 수정 함수
 def faq_directory_path(instance, filename):
-    import os
-    from random import randint
-    from django.utils.timezone import now
-
-    filename_base, filename_ext = os.path.splitext(filename)
-
-    return "faq_photo/{}/{}" % (
-        # instance.id,
-        now().strftime("%Y%m%d") + "_" + str(randint(100, 999)),
-        filename,
-    )
+    n = random.randint(1000000000, 9999999999)
+    return "faq_photo/photo_{}{}/{}".format(instance.id, n, filename)
 
 
 # FAQPost 모델(DB에서는 테이블)
