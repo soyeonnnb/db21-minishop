@@ -10,7 +10,6 @@ from django.views.generic import (
     DeleteView,
 )
 
-
 from . import models
 from . import forms
 from users import mixins as users_mixins

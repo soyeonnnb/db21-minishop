@@ -38,6 +38,7 @@ PROJECT_APPS = [
     "orders.apps.OrdersConfig",
     "board.apps.BoardConfig",
     "reviews.apps.ReviewsConfig",
+    "storages",
 ]
 
 INSTALLED_APPS = DJANGO_APPS + PROJECT_APPS
@@ -132,13 +133,19 @@ STATIC_URL = "/static/"  # 이건 서버 url
 
 MEDIA_URL = "/media/"
 
-MEDIA_ROOT = os.path.join(BASE_DIR, "uploads")
-
+# MEDIA_ROOT = os.path.join(BASE_DIR, "uploads")
+"""
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
 
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+"""
+
+STATIC_DIR = os.path.join(BASE_DIR, "static")
+STATICFILES_DIRS = [
+    STATIC_DIR,
+]
 
 # Authentication backends
 AUTHENTICATION_BACKENDS = ("django.contrib.auth.backends.ModelBackend",)
@@ -153,5 +160,17 @@ LOGIN_REDIRECT_URL = "users:login"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-# Activate Django-Heroku.
-# django_on_heroku.settings(locals())
+###########################AWS
+AWS_ACCESS_KEY_ID = config("AWS_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = config("AWS_SECRET_ACCESS_KEY")
+AWS_REGION = "ap-northeast-2"
+
+###S3 Storages
+AWS_STORAGE_BUCKET_NAME = config("AWS_STORAGE_BUCKET_NAME")
+AWS_S3_CUSTOM_DOMAIN = "%s.s3.%s.amazonaws.com" % (AWS_STORAGE_BUCKET_NAME, AWS_REGION)
+AWS_S3_OBJECT_PARAMETERS = {
+    "CacheControl": "max-age=86400",
+}
+DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+MEDIA_ROOT = os.path.join(BASE_DIR, "uploads/")
+STATICFILES_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"

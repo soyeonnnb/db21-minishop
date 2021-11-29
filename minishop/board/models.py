@@ -3,7 +3,17 @@ from django.db import models
 
 # 사진 저장이름 수정 함수
 def faq_directory_path(instance, filename):
-    return "faq_photo/post_{}/{}".format(instance.id, filename)
+    import os
+    from random import randint
+    from django.utils.timezone import now
+
+    filename_base, filename_ext = os.path.splitext(filename)
+
+    return "faq_photo/{}/{}" % (
+        # instance.id,
+        now().strftime("%Y%m%d") + "_" + str(randint(100, 999)),
+        filename,
+    )
 
 
 # FAQPost 모델(DB에서는 테이블)
