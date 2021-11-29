@@ -84,7 +84,7 @@ class UpdateProductView(users_mixins.LoggedInOnlyView, UpdateView):
     )
     success_message = "상품이 수정되었습니다"
 
-    # 폼 입력방식 커스텀
+    # 폼 입력 커스텀
     def get_form(self, form_class=None):
         form = super().get_form(form_class=form_class)
         form.fields["name"].widget.attrs = {
