@@ -2,11 +2,11 @@ from django import forms
 from . import models
 
 
-#  FAQ POST 를 생성하는 폼 클래스
+#  FAQ POST 를 생성하는 폼  클래스
 class CreateFAQPostForm(forms.ModelForm):
     class Meta:
-        model = models.FAQPost
-        fields = ["title", "body", "photo"]
+        model = models.FAQPost  # 해당 테이블과 관련된 폼 작성
+        fields = ["title", "body", "photo"]  # 해당 폼과 관련된 애트리뷰트
 
     def __init__(self, *args, **kwargs):
         super(CreateFAQPostForm, self).__init__(*args, **kwargs)
@@ -30,8 +30,8 @@ class CreateFAQPostForm(forms.ModelForm):
 #  FAQ 답변을 생성하는 폼 클래스
 class CreateFAQCommentForm(forms.ModelForm):
     class Meta:
-        model = models.FAQComment
-        fields = ["comment"]
+        model = models.FAQComment  # 해당 테이블과 관련된 폼 작성
+        fields = ["comment"]  # 관련 애트리뷰트
 
     def __init__(self, *args, **kwargs):
         super(CreateFAQCommentForm, self).__init__(*args, **kwargs)
