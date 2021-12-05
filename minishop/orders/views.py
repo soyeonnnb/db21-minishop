@@ -119,9 +119,7 @@ def order_update(request, pk):
                     product.save()
                     order.save()
                     messages.success(request, "주문이 수정되었습니다.")
-                return redirect(
-                    reverse_lazy("orders:detail", kwargs={"pk": pk, "product": product})
-                )
+                return redirect(reverse_lazy("orders:detail", kwargs={"pk": pk}))
 
         else:
             order = models.Order.objects.get(pk=pk)
