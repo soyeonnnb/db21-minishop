@@ -27,6 +27,32 @@ class CreateFAQPostForm(forms.ModelForm):
         }
 
 
+class UpdateFAQPostForm(forms.ModelForm):
+    class Meta:
+        model = models.FAQPost  # 해당 테이블과 관련된 폼 작성
+        fields = ["title", "body", "photo"]  # 해당 폼과 관련된 애트리뷰트
+
+    def __init__(self, *args, **kwargs):
+        super(UpdateFAQPostForm, self).__init__(*args, **kwargs)
+
+        self.fields["title"].widget.attrs = {
+            "placeholder": "제목",
+            "class": "form-control",
+            "id": "titleInput",
+        }
+
+        self.fields["body"].widget.attrs = {
+            "class": "form-control",
+            "id": "bodyInput",
+            "aria-describedby": "bodyInput",
+            "aria-label": "Body",
+        }
+        self.fields["photo"].widget.attrs = {
+            "class": "form-control",
+            "id": "photoInput",
+        }
+
+
 #  FAQ 답변을 생성하는 폼 클래스
 class CreateFAQCommentForm(forms.ModelForm):
     class Meta:

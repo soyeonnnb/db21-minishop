@@ -35,12 +35,7 @@ class FAQPost(models.Model):
 
     # 사진을 원하는 이름으로 저장하기 위해 만든 함수.
     def save(self, *args, **kwargs):
-        if self.id is None:
-            temp_image = self.photo
-            self.photo = None
-            super().save(*args, **kwargs)
-            self.photo = temp_image
-            super().save(*args, **kwargs)
+        super(FAQPost, self).save(*args, **kwargs)  # Calling save method
 
     # AWS RDS 사용
     class Meta:

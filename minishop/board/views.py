@@ -1,6 +1,7 @@
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
+from django.contrib import messages
 from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse, reverse_lazy
 from django.utils import timezone
@@ -62,7 +63,6 @@ def faq_post_create(request):
             finished_form = form.save(commit=False)
             finished_form.user = request.user  # user 애트리뷰트는 요청을 보낸 user의 pk를 넣음
             finished_form.save()
-            request.FILES["imagename"].name
             return redirect(
                 "board:detail",
                 finished_form.pk,
@@ -87,40 +87,29 @@ def my_faqpost_view(request):
 
 
 # 게시물을 수정하는 클래스
-class UpdatePostView(users_mixins.LoggedInOnlyView, UpdateView):
+@login_required
+def faq_post_update(request, pk):
+    faqpost = models.FAQPost.objects.get(pk=pk)  # 수정할 post 개체 가져오기
+    if request.method == "POST" or request.method == "FILES":
+        form = forms.UpdateFAQPostForm(request.POST)
+        if form.is_valid():
+            title = form.cleaned_data["title"]
+            body = form.cleaned_data["body"]
+            photo = form.cleaned_data["photo"]
+            faqpost.title = title  # 폼 저장
+            faqpost.body = body
+            faqpost.photo = photo
+            faqpost.save()
+            messages.success(request, "게시물이 수정되었습니다.")  # 완료 메세지 띄우기
+        return redirect(reverse_lazy("board:my_faq"))
 
-    model = models.FAQPost
-    template_name = "board/faqpost_update.html"
-    fields = (  # 폼 입력 양식
-        "title",
-        "body",
-        "photo",
-    )
-    success_message = "게시물이 수정되었습니다"
-
-    # 폼 입력방식 커스텀
-    def get_form(self, form_class=None):
-        form = super().get_form(form_class=form_class)
-        form.fields["title"].widget.attrs = {
-            "placeholder": "제목",
-            "class": "form-control",
-            "id": "titleInput",
-        }
-        form.fields["body"].widget.attrs = {
-            "class": "form-control",
-            "id": "bodyInput",
-            "aria-describedby": "bodyInput",
-            "aria-label": "Body",
-        }
-        form.fields["photo"].widget.attrs = {
-            "class": "form-control",
-            "id": "photoInput",
-        }
-        return form
-
-    # 해당 메소드가 성공하면 다음으로 갈 url
-    def get_success_url(self):
-        return reverse("board:my_faq")
+    else:
+        form = forms.UpdateFAQPostForm(instance=faqpost)  # 수정할 개체 + 폼 가져오기
+        return render(
+            request,
+            "board/faqpost_update.html",
+            {"form": form},
+        )
 
 
 # 게시물을 삭제해주는 class

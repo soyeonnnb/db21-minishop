@@ -56,7 +56,8 @@
                                 <button class="btn btn-outline-danger flex-shrink-0" disabled>
                                     불가</button>
                                 {% else %}
-                                <a href="#" class="btn btn-outline-danger flex-shrink-0">
+                                <a href="{% url 'board:delete' pk=post.pk %}"
+                                    class="btn btn-outline-danger flex-shrink-0">
                                     삭제</a>
                                 {% endif %}
 
